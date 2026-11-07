@@ -33,6 +33,7 @@ class Chamado(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     endereco = models.CharField(max_length=200)
     foto = models.ImageField(upload_to='fotos_chamados/', blank=True, null=True)
+    status = models.CharField(max_length=20, choices=[('Aberto', 'Aberto'), ('Em andamento', 'Em andamento'), ('Concluído', 'Concluído')], default='Aberto')
     
     class Meta:
         ordering = ['-data_criacao']    
@@ -51,3 +52,9 @@ class AdministrarChamado(models.Model):
 
     def __str__(self):
         return f"{self.chamado.titulo} - {self.usuario.username} - {self.status}"
+    
+    ## isso aq serve para atualizar o status do chamado quando um AdministrarChamado for salvo
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.chamado.status = self.status
+        self.chamado.save()

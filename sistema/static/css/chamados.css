@@ -1,0 +1,333 @@
+/* ==========================================================================
+   Resolve Nova Esperança — chamados.css
+   Página "Meus chamados" do cidadão (chamados.html)
+   Usa as variáveis e classes globais definidas em base.css
+   ========================================================================== */
+
+/* ---------- Cabeçalho ---------- */
+.page-header__sub {
+    margin: 4px 0 0;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Resumo / filtros ---------- */
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.resumo__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    margin: 0;
+    padding: 16px 18px;
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+    border-top: 4px solid var(--cor-texto-suave);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    font-weight: 400;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .15s, background .15s, border-color .15s;
+}
+
+.resumo__item:hover {
+    border-color: #c8d1ce;
+    transform: translateY(-1px);
+}
+
+.resumo__item--aberto       { border-top-color: var(--cor-aberto); }
+.resumo__item--em-andamento { border-top-color: var(--cor-andamento); }
+.resumo__item--concluido    { border-top-color: var(--cor-concluido); }
+
+.resumo__numero {
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+/* Quando não há chamados naquele status o template deixa o número vazio */
+.resumo__numero:empty::before {
+    content: "0";
+}
+
+/* ---------- Filtro só com CSS (rádios escondidos) ---------- */
+.filtro__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Cartão do resumo ativo */
+#f-todos:checked        ~ .resumo label[for="f-todos"],
+#f-aberto:checked       ~ .resumo label[for="f-aberto"],
+#f-em-andamento:checked ~ .resumo label[for="f-em-andamento"],
+#f-concluido:checked    ~ .resumo label[for="f-concluido"] {
+    background: var(--cor-primaria-clara);
+    border-color: var(--cor-primaria);
+}
+
+/* Foco pelo teclado (setas trocam o filtro) */
+#f-todos:focus-visible        ~ .resumo label[for="f-todos"],
+#f-aberto:focus-visible       ~ .resumo label[for="f-aberto"],
+#f-em-andamento:focus-visible ~ .resumo label[for="f-em-andamento"],
+#f-concluido:focus-visible    ~ .resumo label[for="f-concluido"] {
+    outline: 3px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
+/* Esconde os chamados que não são do status escolhido */
+#f-aberto:checked       ~ .chamados .chamado:not(.chamado--aberto),
+#f-em-andamento:checked ~ .chamados .chamado:not(.chamado--em-andamento),
+#f-concluido:checked    ~ .chamados .chamado:not(.chamado--concluido) {
+    display: none;
+}
+
+/* Mensagem "nenhum chamado" quando o filtro não encontra nada */
+.chamados__vazio-filtro {
+    display: none;
+}
+
+.filtro:has(#f-aberto:checked):not(:has(.chamado--aberto)) .chamados__vazio-filtro,
+.filtro:has(#f-em-andamento:checked):not(:has(.chamado--em-andamento)) .chamados__vazio-filtro,
+.filtro:has(#f-concluido:checked):not(:has(.chamado--concluido)) .chamados__vazio-filtro {
+    display: block;
+}
+
+.resumo__item--aberto .resumo__numero       { color: var(--cor-aberto); }
+.resumo__item--em-andamento .resumo__numero { color: var(--cor-andamento); }
+.resumo__item--concluido .resumo__numero    { color: var(--cor-concluido); }
+
+.resumo__rotulo {
+    font-size: .88rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Lista ---------- */
+.chamados {
+    display: grid;
+    gap: 16px;
+}
+
+.chamado {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-left: 5px solid var(--cor-aberto);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    transition: box-shadow .15s;
+}
+
+.chamado:hover {
+    box-shadow: var(--sombra-lg);
+}
+
+.chamado--em-andamento { border-left-color: var(--cor-andamento); }
+.chamado--concluido    { border-left-color: var(--cor-concluido); }
+
+/* Foto */
+.chamado__foto {
+    display: block;
+    background: var(--cor-fundo);
+    min-height: 100%;
+}
+
+.chamado__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chamado__foto--vazia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    opacity: .5;
+}
+
+/* Corpo */
+.chamado__corpo {
+    padding: 18px 22px;
+    min-width: 0;
+}
+
+.chamado__topo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.chamado__protocolo {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    margin-right: 4px;
+}
+
+.chamado__titulo {
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+}
+
+.chamado__descricao {
+    color: var(--cor-texto-suave);
+    font-size: .95rem;
+    margin-bottom: 12px;
+}
+
+.chamado__info {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    font-size: .9rem;
+}
+
+.chamado__info li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chamado__info-icone {
+    font-size: .95rem;
+}
+
+.chamado__orgao {
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--cor-primaria-clara);
+    color: var(--cor-primaria);
+}
+
+.chamado__atualizacao {
+    margin: 12px 0 0;
+    font-size: .85rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Linha do tempo do status ---------- */
+.progresso {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    counter-reset: etapa;
+}
+
+.progresso__etapa {
+    position: relative;
+    padding-top: 26px;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+    text-align: center;
+}
+
+/* bolinha */
+.progresso__etapa::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--cor-superficie);
+    border: 2px solid var(--cor-borda);
+    z-index: 1;
+}
+
+/* linha entre as bolinhas */
+.progresso__etapa + .progresso__etapa::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: -50%;
+    width: 100%;
+    height: 3px;
+    background: var(--cor-borda);
+}
+
+.progresso__etapa.is-feito {
+    color: var(--cor-texto);
+}
+
+.progresso__etapa.is-feito::before {
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+
+.progresso__etapa.is-feito + .progresso__etapa.is-feito::after {
+    background: var(--cor-primaria);
+}
+
+.chamado--concluido .progresso__etapa.is-feito::before,
+.chamado--concluido .progresso__etapa.is-feito + .progresso__etapa.is-feito::after {
+    background: var(--cor-concluido);
+    border-color: var(--cor-concluido);
+}
+
+/* ---------- Estados vazios ---------- */
+.chamados__vazio {
+    text-align: center;
+    max-width: 560px;
+    margin: 32px auto;
+    padding: 48px 32px;
+}
+
+.chamados__vazio-icone {
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.chamados__vazio p {
+    color: var(--cor-texto-suave);
+    margin-bottom: 24px;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+    .resumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .chamado {
+        grid-template-columns: 1fr;
+    }
+
+    .chamado__foto {
+        height: 180px;
+    }
+
+    .chamado__corpo {
+        padding: 16px;
+    }
+
+    .page-header .btn {
+        width: 100%;
+    }
+}
