@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+
+{% url 'cidadao_dashboard' as cidadao_url %}
+
+<section class="hero">
+    <span class="hero__eyebrow">Canal oficial de chamados da cidade</span>
+    <h1 class="hero__title">
+        Viu um problema em Nova Esperança?
+        <span>A gente resolve junto.</span>
+    </h1>
+    <p class="hero__text">
+        Buraco na rua, poste apagado, falta de energia, vazamento de água ou lixo acumulado.
+        Abra um chamado em poucos minutos, envie uma foto do local e acompanhe cada etapa
+        até o órgão responsável resolver.
+    </p>
+
+    <div class="hero__actions">
+        {% if user.is_authenticated %}
+            <a href="{{ cidadao_url|default:'#' }}" class="btn btn--primary btn--lg">Ver meus chamados</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn--primary btn--lg">Criar conta e abrir chamado</a>
+            <a href="{% url 'login' %}" class="btn btn--ghost btn--lg">Já tenho conta</a>
+        {% endif %}
+    </div>
+
+    <ul class="hero__highlights">
+        <li>✔ Gratuito para todos os cidadãos</li>
+        <li>✔ Encaminhado direto ao órgão certo</li>
+        <li>✔ Acompanhamento em tempo real</li>
+    </ul>
+</section>
+
+
+<!-- ===================== O QUE PODE SER REPORTADO ===================== -->
+<section class="section">
+    <div class="section__header">
+        <h2>O que você pode reportar</h2>
+        <p>Problemas do dia a dia que afetam a sua rua, o seu bairro e a sua cidade.</p>
+    </div>
+
+    <div class="grid grid--4">
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">🕳️</span>
+            <h3>Buracos e pavimentação</h3>
+            <p>Buracos, asfalto danificado, ruas sem calçamento e bueiros abertos.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">💡</span>
+            <h3>Iluminação pública</h3>
+            <p>Postes apagados, lâmpadas piscando ou ruas sem iluminação à noite.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">⚡</span>
+            <h3>Falta de energia</h3>
+            <p>Quedas de energia, fios soltos ou partidos e transformadores com problema.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">🚰</span>
+            <h3>Água e esgoto</h3>
+            <p>Vazamentos, falta de água, esgoto a céu aberto e bocas de lobo entupidas.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">🗑️</span>
+            <h3>Lixo e limpeza urbana</h3>
+            <p>Coleta que não passou, entulho descartado irregularmente e terrenos sujos.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">🌳</span>
+            <h3>Árvores e praças</h3>
+            <p>Poda, árvores com risco de queda e manutenção de praças e parques.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">🚦</span>
+            <h3>Trânsito e sinalização</h3>
+            <p>Semáforos quebrados, placas danificadas e faixas de pedestre apagadas.</p>
+        </article>
+
+        <article class="categoria">
+            <span class="categoria__icon" aria-hidden="true">♿</span>
+            <h3>Calçadas e acessibilidade</h3>
+            <p>Calçadas quebradas, obstáculos no caminho e falta de rampas de acesso.</p>
+        </article>
+    </div>
+</section>
+
+
+<!-- ===================== COMO FUNCIONA ===================== -->
+<section class="section section--destaque">
+    <div class="section__header">
+        <h2>Como funciona</h2>
+        <p>Do registro à solução, em quatro passos simples.</p>
+    </div>
+
+    <ol class="passos">
+        <li class="passo">
+            <span class="passo__numero">1</span>
+            <h3>Crie sua conta</h3>
+            <p>Cadastre-se com nome de usuário, e-mail e senha. Leva menos de um minuto.</p>
+        </li>
+        <li class="passo">
+            <span class="passo__numero">2</span>
+            <h3>Abra o chamado</h3>
+            <p>Escolha a categoria, descreva o problema, informe o endereço e anexe uma foto.</p>
+        </li>
+        <li class="passo">
+            <span class="passo__numero">3</span>
+            <h3>Encaminhamento</h3>
+            <p>O chamado vai automaticamente para o órgão da prefeitura responsável pela categoria.</p>
+        </li>
+        <li class="passo">
+            <span class="passo__numero">4</span>
+            <h3>Acompanhe</h3>
+            <p>Veja o status do seu chamado ser atualizado até a conclusão do serviço.</p>
+        </li>
+    </ol>
+</section>
+
+
+<!-- ===================== STATUS ===================== -->
+<section class="section">
+    <div class="section__header">
+        <h2>Entenda o status do seu chamado</h2>
+        <p>Cada chamado passa por etapas que você acompanha pelo painel.</p>
+    </div>
+
+    <div class="grid grid--3">
+        <div class="card status-card">
+            <span class="badge badge--aberto">Aberto</span>
+            <p>Seu chamado foi registrado e está na fila para ser analisado pelo órgão responsável.</p>
+        </div>
+        <div class="card status-card">
+            <span class="badge badge--em-andamento">Em andamento</span>
+            <p>Uma equipe já está cuidando do problema. O serviço foi programado ou está sendo executado.</p>
+        </div>
+        <div class="card status-card">
+            <span class="badge badge--concluido">Concluído</span>
+            <p>O problema foi resolvido. Obrigado por ajudar a cuidar de Nova Esperança!</p>
+        </div>
+    </div>
+
+    <p class="nota">
+        Os chamados também recebem uma prioridade —
+        <span class="badge badge--baixa">Baixa</span>
+        <span class="badge badge--media">Média</span>
+        <span class="badge badge--alta">Alta</span>
+        — para que os casos mais urgentes sejam atendidos primeiro.
+    </p>
+</section>
+
+
+<!-- ===================== DICAS ===================== -->
+<section class="section">
+    <div class="grid grid--2 dicas">
+        <div>
+            <h2>Dicas para um bom chamado</h2>
+            <p>Quanto mais informações, mais rápido a equipe encontra e resolve o problema.</p>
+        </div>
+        <ul class="checklist">
+            <li><strong>Endereço completo:</strong> rua, número aproximado, bairro e um ponto de referência.</li>
+            <li><strong>Foto do local:</strong> uma imagem ajuda a equipe a entender o tamanho do problema.</li>
+            <li><strong>Descrição clara:</strong> conte o que está acontecendo e desde quando.</li>
+            <li><strong>Categoria certa:</strong> assim o chamado chega direto ao órgão responsável.</li>
+            <li><strong>Um problema por chamado:</strong> facilita o acompanhamento de cada serviço.</li>
+        </ul>
+    </div>
+</section>
+
+
+<!-- ===================== EMERGÊNCIAS ===================== -->
+<section class="emergencia">
+    <div>
+        <h3>⚠️ Em caso de emergência, não abra um chamado</h3>
+        <p>
+            Situações com risco à vida — como fios de alta tensão caídos, incêndios, desabamentos ou
+            acidentes — devem ser comunicadas imediatamente pelos telefones de emergência.
+        </p>
+    </div>
+    <ul class="emergencia__numeros">
+        <li><strong>190</strong> Polícia Militar</li>
+        <li><strong>192</strong> SAMU</li>
+        <li><strong>193</strong> Bombeiros</li>
+        <li><strong>199</strong> Defesa Civil</li>
+    </ul>
+</section>
+
+
+<!-- ===================== PERGUNTAS FREQUENTES ===================== -->
+<section class="section">
+    <div class="section__header">
+        <h2>Perguntas frequentes</h2>
+    </div>
+
+    <div class="faq">
+        <details>
+            <summary>Preciso pagar alguma coisa para abrir um chamado?</summary>
+            <p>Não. O Resolve Nova Esperança é um serviço gratuito para todos os cidadãos.</p>
+        </details>
+        <details>
+            <summary>Preciso ter conta para abrir um chamado?</summary>
+            <p>Sim. Com a conta você consegue acompanhar o andamento de todos os seus chamados em um só lugar.</p>
+        </details>
+        <details>
+            <summary>Quem recebe o meu chamado?</summary>
+            <p>Cada categoria está ligada a um órgão da prefeitura. O chamado é encaminhado automaticamente
+               para os responsáveis daquele órgão.</p>
+        </details>
+        <details>
+            <summary>Como sei se o meu problema foi resolvido?</summary>
+            <p>Acesse "Meus chamados" depois de entrar no sistema. Lá você vê o status atualizado de cada
+               chamado: Aberto, Em andamento ou Concluído.</p>
+        </details>
+        <details>
+            <summary>Posso enviar foto do problema?</summary>
+            <p>Pode e deve! A foto é opcional, mas ajuda muito a equipe a identificar o local e o tipo de serviço necessário.</p>
+        </details>
+    </div>
+</section>
+
+
+<!-- ===================== CHAMADA FINAL ===================== -->
+<section class="cta">
+    <h2>Juntos, fazemos uma Nova Esperança melhor.</h2>
+    <p>Sua participação ajuda a prefeitura a enxergar e resolver os problemas da cidade.</p>
+    {% if user.is_authenticated %}
+        <a href="{{ cidadao_url|default:'#' }}" class="btn btn--light btn--lg">Ir para meus chamados</a>
+    {% else %}
+        <a href="{% url 'register' %}" class="btn btn--light btn--lg">Criar minha conta</a>
+    {% endif %}
+</section>
+
+{% endblock %}

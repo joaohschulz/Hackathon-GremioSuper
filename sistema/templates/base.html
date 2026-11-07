@@ -47,8 +47,8 @@
                         <button type="submit" class="btn btn--ghost btn--sm">Sair</button>
                     </form>
                 {% else %}
-                    <a href="{{ login_url|default:'#' }}" class="nav__link">Entrar</a>
-                    <a href="{{ register_url|default:'#' }}" class="btn btn--primary btn--sm">Criar conta</a>
+                    <a href="{% url 'login' %}" class="nav__link">Entrar</a>
+                    <a href="{% url 'register' %}" class="btn btn--primary btn--sm">Criar conta</a>
                 {% endif %}
             </nav>
         </div>

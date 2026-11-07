@@ -565,3 +565,385 @@ tbody tr:hover {
         padding: 24px 20px;
     }
 }
+
+
+/* ==========================================================================
+   Página inicial (conteudo_base.html)
+   ========================================================================== */
+
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+.btn--lg {
+    padding: 13px 24px;
+    font-size: 1.05rem;
+}
+
+.btn--light {
+    background: #fff;
+    color: var(--cor-primaria);
+}
+
+.btn--light:hover {
+    background: var(--cor-primaria-clara);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+    text-align: center;
+    padding: 40px 0 56px;
+}
+
+.hero__eyebrow {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: var(--cor-primaria-clara);
+    color: var(--cor-primaria);
+    font-size: .85rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.hero__title {
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    max-width: 780px;
+    margin: 0 auto 16px;
+    letter-spacing: -.02em;
+}
+
+.hero__title span {
+    display: block;
+    color: var(--cor-primaria);
+}
+
+.hero__text {
+    max-width: 640px;
+    margin: 0 auto 28px;
+    color: var(--cor-texto-suave);
+    font-size: 1.1rem;
+}
+
+.hero__actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.hero__highlights {
+    list-style: none;
+    padding: 0;
+    margin: 28px 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px 24px;
+    flex-wrap: wrap;
+    font-size: .92rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Seções ---------- */
+.section {
+    padding: 48px 0;
+}
+
+.section__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 32px;
+}
+
+.section__header h2 {
+    font-size: 1.75rem;
+}
+
+.section__header p {
+    color: var(--cor-texto-suave);
+    margin: 0;
+}
+
+.section--destaque {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: 16px;
+    padding: 48px 32px;
+}
+
+/* ---------- Categorias ---------- */
+.categoria {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 22px;
+    transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+
+.categoria:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra-lg);
+    border-color: var(--cor-primaria);
+}
+
+.categoria__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--cor-primaria-clara);
+    font-size: 1.5rem;
+    margin-bottom: 14px;
+}
+
+.categoria h3 {
+    font-size: 1.02rem;
+}
+
+.categoria p {
+    font-size: .92rem;
+    color: var(--cor-texto-suave);
+    margin: 0;
+}
+
+/* ---------- Passos ---------- */
+.passos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    counter-reset: none;
+}
+
+.passo {
+    position: relative;
+    text-align: center;
+}
+
+.passo__numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.passo h3 {
+    font-size: 1.05rem;
+}
+
+.passo p {
+    font-size: .93rem;
+    color: var(--cor-texto-suave);
+    margin: 0;
+}
+
+/* ---------- Status ---------- */
+.status-card .badge {
+    font-size: .88rem;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+}
+
+.status-card p {
+    color: var(--cor-texto-suave);
+    font-size: .95rem;
+}
+
+.nota {
+    text-align: center;
+    margin: 24px 0 0;
+    color: var(--cor-texto-suave);
+    font-size: .95rem;
+    line-height: 2;
+}
+
+/* ---------- Dicas ---------- */
+.dicas {
+    align-items: center;
+    gap: 40px;
+}
+
+.dicas h2 {
+    font-size: 1.75rem;
+}
+
+.dicas > div p {
+    color: var(--cor-texto-suave);
+}
+
+.checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.checklist li {
+    position: relative;
+    padding: 14px 16px 14px 48px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-sm);
+    font-size: .95rem;
+}
+
+.checklist li::before {
+    content: "✓";
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--cor-concluido-bg);
+    color: var(--cor-concluido);
+    font-size: .75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------- Emergência ---------- */
+.emergencia {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    background: var(--cor-alta-bg);
+    border: 1px solid #fecaca;
+    border-left: 5px solid var(--cor-alta);
+    border-radius: var(--raio);
+    padding: 24px 28px;
+    margin: 16px 0;
+}
+
+.emergencia h3 {
+    color: var(--cor-alta);
+}
+
+.emergencia p {
+    margin: 0;
+    max-width: 560px;
+    font-size: .95rem;
+}
+
+.emergencia__numeros {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 8px 24px;
+    font-size: .92rem;
+}
+
+.emergencia__numeros strong {
+    display: inline-block;
+    min-width: 40px;
+    font-size: 1.15rem;
+    color: var(--cor-alta);
+}
+
+/* ---------- FAQ ---------- */
+.faq {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    gap: 10px;
+}
+
+.faq details {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-sm);
+    padding: 0 18px;
+}
+
+.faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 16px 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq summary::after {
+    content: "+";
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--cor-primaria);
+}
+
+.faq details[open] summary::after {
+    content: "−";
+}
+
+.faq details p {
+    color: var(--cor-texto-suave);
+    padding-bottom: 16px;
+    margin: 0;
+}
+
+/* ---------- Chamada final ---------- */
+.cta {
+    text-align: center;
+    background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-escura));
+    color: #fff;
+    border-radius: 16px;
+    padding: 56px 24px;
+    margin-top: 32px;
+}
+
+.cta h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.cta p {
+    opacity: .9;
+    margin-bottom: 24px;
+}
+
+/* ---------- Responsivo da página inicial ---------- */
+@media (max-width: 960px) {
+    .grid--4,
+    .passos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .grid--4,
+    .passos {
+        grid-template-columns: 1fr;
+    }
+
+    .section--destaque {
+        padding: 32px 20px;
+    }
+
+    .emergencia {
+        padding: 20px;
+    }
+
+    .hero__actions .btn {
+        width: 100%;
+    }
+}
