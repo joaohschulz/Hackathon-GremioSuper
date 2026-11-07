@@ -22,7 +22,7 @@
 
 {% if chamados %}
 
-    {# Agrupa os chamados por status só para contar quantos tem de cada (sem JavaScript) #}
+    <!-- reagrupa sem usar JavaScript -->
     {% regroup chamados|dictsort:"status" by status as grupos %}
 
     {#  Filtro feito só com CSS: cada rádio escondido controla quais cartões aparecem. #}
