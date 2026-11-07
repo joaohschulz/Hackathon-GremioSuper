@@ -38,7 +38,18 @@ class NovoChamadoView(LoginRequiredMixin, CreateView):
         form.instance.cidadao = self.request.user
         return super().form_valid(form)
     
-class AdmChamadoView(LoginRequiredMixin, ListView):
+    
+# aq ele configura que para acessar as views de adm precisa ter o status de administrador
+# o test_func verifica se o usuário logado tem o perfil de administrador, 
+# se n tiver ele redireciona para a página de login   
+class VerificarAdm(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = 'login'
+    def test_func(self):
+        perfil = getattr(self.request.user, 'perfil', None) 
+        return perfil is not None and perfil.tipo_usuario == 'Administrador'
+    
+    
+class AdmChamadoView(VerificarAdm, ListView):
     form_class = AdmChamadoForm
     login_url = 'login'
     context_object_name = 'adm_chamados'    
@@ -50,7 +61,7 @@ class AdmChamadoView(LoginRequiredMixin, ListView):
         orgao = self.request.user.perfil.orgao
         return Chamado.objects.filter(categoria__orgao=orgao)
     
-class VerChamadoView(LoginRequiredMixin, TemplateView):
+class VerChamadoView(VerificarAdm, TemplateView):
     template_name = 'ver_chamado.html'
     login_url = 'login'
     
@@ -63,7 +74,7 @@ class VerChamadoView(LoginRequiredMixin, TemplateView):
         context['chamado'] = chamado
         return context
     
-class GerenciarChamadoView(LoginRequiredMixin, CreateView):
+class GerenciarChamadoView(VerificarAdm, CreateView):
     form_class = AdmChamadoForm
     login_url = 'login'
     template_name = 'gerenciar_chamados.html'
