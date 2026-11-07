@@ -17,29 +17,6 @@
     --largura-max: 1120px;
 }
 
-/* ---------- Reset básico ---------- */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-html, body {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: var(--fonte);
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--cor-texto);
-    background: var(--cor-fundo);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
 a {
     color: var(--cor-primaria);
     text-decoration: none;
@@ -62,7 +39,6 @@ p {
   display: grid;
   place-items: center; 
   height: 100vh;
-  border: 2px solid black;
   width: 100%;
   max-width: var(--largura-max);
   margin: 0 auto;
@@ -99,109 +75,4 @@ p {
     font-size: .82rem;
     color: var(--cor-texto-suave);
     margin-top: 1px;
-}
-
-
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.nav__link {
-    color: var(--cor-texto-suave);
-    font-weight: 500;
-}
-
-.nav__link:hover {
-    color: var(--cor-primaria);
-    text-decoration: none;
-}
-
-.nav__user {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: .95rem;
-    padding-left: 20px;
-    border-left: 1px solid var(--cor-borda);
-}
-
-.nav__logout {
-    margin: 0;
-}
-
-/* Menu hambúrguer (só aparece no celular) */
-.menu-toggle {
-    display: none;
-}
-
-.menu-button {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 8px;
-}
-
-.menu-button span {
-    width: 22px;
-    height: 2px;
-    background: var(--cor-texto);
-    border-radius: 2px;
-}
-
-/* ---------- Rodapé ---------- */
-.footer {
-    background: var(--cor-superficie);
-    border-top: 1px solid var(--cor-borda);
-    font-size: .9rem;
-}
-
-.footer__inner {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.footer__muted {
-    color: var(--cor-texto-suave);
-}
-
-
-@media (max-width: 720px) {
-    .menu-button {
-        display: flex;
-    }
-
-    .nav {
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 4px;
-        padding: 8px 0 16px;
-    }
-
-    .menu-toggle:checked ~ .nav {
-        display: flex;
-    }
-
-    .nav__link {
-        padding: 8px 0;
-    }
-
-    .nav__user {
-        border-left: none;
-        padding: 8px 0;
-        border-top: 1px solid var(--cor-borda);
-    }
-
-    .nav .btn,
-    .nav__logout .btn {
-        width: 100%;
-    }
 }

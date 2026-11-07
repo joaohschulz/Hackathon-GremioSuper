@@ -1,58 +1,13 @@
+{% extends "navbar.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-        <link rel="stylesheet" href="{% static 'css/login.css' %}">
-</head>
-<body>
-<header class="topbar">
-        <div class="container topbar__inner">
-            <a class="brand" href="{{ home_url|default:'/' }}">
-                <span class="brand__icon" aria-hidden="true">✓</span>
-                <span class="brand__text">
-                    <span class="brand__resolve">Resolve</span>
-                    <span class="brand__cidade">Nova Esperança</span>
-                </span>
-            </a>
 
-            <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
-            <label for="menu-toggle" class="menu-button" aria-hidden="true">
-                <span></span><span></span><span></span>
-            </label>
+{% block title %}Entrar · Resolve Nova Esperança{% endblock %}
 
-            <nav class="nav">
-                <a href="{{ home_url|default:'/' }}" class="nav__link">Início</a>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
 
-                {% if user.is_authenticated %}
-                    {% if user.perfil.tipo_usuario == 'Administrador' %}
-                        <a href="{{ adm_url|default:'#' }}" class="nav__link">Painel do órgão</a>
-                    {% else %}
-                        <a href="{{ cidadao_url|default:'#' }}" class="nav__link">Meus chamados</a>
-                    {% endif %}
-
-                    <span class="nav__user">
-                        Olá, <strong>{{ user.first_name|default:user.username }}</strong>
-                        {% if user.perfil.tipo_usuario == 'Administrador' %}
-                            <span class="tag tag--adm">{{ user.perfil.orgao.sigla|default:'ADM' }}</span>
-                        {% endif %}
-                    </span>
-
-                    {# No Django 5+ o logout só aceita POST #}
-                    <form method="post" action="{% url 'logout' %}" class="nav__logout">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn--ghost btn--sm">Sair</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="nav__link">Entrar</a>
-                    <a href="{% url 'register' %}" class="btn btn--primary btn--sm">Criar conta</a>
-                {% endif %}
-            </nav>
-        </div>
-    </header>
-    <main>
+{% block content %}
         <div class="login-container">
             <h1>Seja bem vindo!</h1>
             <h2>Entrar</h2>
@@ -73,12 +28,4 @@
                 <a href="{% url 'login' %}">Esqueceu a senha?</a>
             </p>
         </div>
-    </main>
-    <footer class="footer">
-        <div class="container footer__inner">
-            <span><strong>Resolve Nova Esperança</strong> · Canal de chamados da cidade de Nova Esperança</span>
-            <span class="footer__muted">© {% now "Y" %}</span>
-        </div>
-    </footer>
-</body>
-</html>
+{% endblock %}
