@@ -8,8 +8,6 @@
 {% endblock %}
 
 {% block content %}
-
-<!-- ===================== CABEÇALHO ===================== -->
 <div class="page-header">
     <div>
         <h1>Meus chamados</h1>
@@ -22,7 +20,6 @@
 
 {% if chamados %}
 
-    <!-- reagrupa sem usar JavaScript -->
     {% regroup chamados|dictsort:"status" by status as grupos %}
 
     {#  Filtro feito só com CSS: cada rádio escondido controla quais cartões aparecem. #}
@@ -31,8 +28,6 @@
         <input type="radio" name="filtro" id="f-aberto"       class="filtro__radio">
         <input type="radio" name="filtro" id="f-em-andamento" class="filtro__radio">
         <input type="radio" name="filtro" id="f-concluido"    class="filtro__radio">
-
-        <!-- ===================== RESUMO / FILTROS ===================== -->
         <div class="resumo">
             <label for="f-aberto" class="resumo__item resumo__item--aberto">
                 <span class="resumo__numero">{% for g in grupos %}{% if g.grouper == 'Aberto' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
@@ -48,7 +43,6 @@
             </label>
         </div>
 
-        <!-- ===================== LISTA DE CHAMADOS ===================== -->
         <div class="chamados">
             {% for chamado in chamados %}
                 {% with ultima=chamado.administracao.first %}
@@ -90,7 +84,6 @@
                             </li>
                         </ul>
 
-                        <!-- Linha do tempo do status -->
                         <ol class="progresso" aria-label="Andamento do chamado">
                             <li class="progresso__etapa is-feito">Aberto</li>
                             <li class="progresso__etapa {% if chamado.status == 'Em andamento' or chamado.status == 'Concluído' %}is-feito{% endif %}">Em andamento</li>
@@ -109,7 +102,6 @@
             {% endfor %}
         </div>
 
-        <!-- Aparece (via CSS) quando o filtro escolhido não tem nenhum chamado -->
         <div class="empty chamados__vazio-filtro">
             <p>Nenhum chamado com esse status.</p>
         </div>
@@ -117,7 +109,6 @@
 
 {% else %}
 
-    <!-- ===================== ESTADO VAZIO ===================== -->
     <div class="card chamados__vazio">
         <span class="chamados__vazio-icone" aria-hidden="true">📋</span>
         <h2>Você ainda não abriu nenhum chamado</h2>
