@@ -1,0 +1,567 @@
+/* ==========================================================================
+   Resolve Nova Esperança — base.css
+   Estilos globais usados por todas as páginas que estendem base.html
+   ========================================================================== */
+
+/* ---------- Variáveis ---------- */
+:root {
+    /* Verde = esperança; azul = serviço público */
+    --cor-primaria: #0f766e;
+    --cor-primaria-escura: #0b5d57;
+    --cor-primaria-clara: #e0f2f1;
+    --cor-secundaria: #1e40af;
+
+    --cor-texto: #1f2937;
+    --cor-texto-suave: #6b7280;
+    --cor-fundo: #f4f7f6;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e2e8e6;
+
+    /* Status do chamado */
+    --cor-aberto: #b45309;
+    --cor-aberto-bg: #fef3c7;
+    --cor-andamento: #1d4ed8;
+    --cor-andamento-bg: #dbeafe;
+    --cor-concluido: #047857;
+    --cor-concluido-bg: #d1fae5;
+
+    /* Prioridade */
+    --cor-baixa: #4b5563;
+    --cor-baixa-bg: #f3f4f6;
+    --cor-media: #b45309;
+    --cor-media-bg: #fef3c7;
+    --cor-alta: #b91c1c;
+    --cor-alta-bg: #fee2e2;
+
+    --raio: 10px;
+    --raio-sm: 6px;
+    --sombra: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .1);
+    --sombra-lg: 0 10px 25px -5px rgba(16, 24, 40, .12);
+
+    --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --largura-max: 1120px;
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fonte);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+    margin: 0 0 .5em;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+/* ---------- Layout ---------- */
+.container {
+    width: 100%;
+    max-width: var(--largura-max);
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.main {
+    flex: 1;
+    padding-top: 32px;
+    padding-bottom: 48px;
+}
+
+.grid {
+    display: grid;
+    gap: 20px;
+}
+
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ---------- Topbar / navegação ---------- */
+.topbar {
+    background: var(--cor-superficie);
+    border-bottom: 3px solid var(--cor-primaria);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    flex-wrap: wrap;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--cor-texto);
+}
+
+.brand:hover {
+    text-decoration: none;
+}
+
+.brand__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--cor-primaria);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.brand__resolve {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--cor-primaria);
+    letter-spacing: -.01em;
+}
+
+.brand__cidade {
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav__link {
+    color: var(--cor-texto-suave);
+    font-weight: 500;
+}
+
+.nav__link:hover {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+.nav__user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .95rem;
+    padding-left: 20px;
+    border-left: 1px solid var(--cor-borda);
+}
+
+.nav__logout {
+    margin: 0;
+}
+
+/* Menu hambúrguer (só aparece no celular) */
+.menu-toggle {
+    display: none;
+}
+
+.menu-button {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-button span {
+    width: 22px;
+    height: 2px;
+    background: var(--cor-texto);
+    border-radius: 2px;
+}
+
+/* ---------- Botões ---------- */
+.btn,
+button,
+input[type="submit"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font: inherit;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: var(--raio-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    text-decoration: none;
+    background: var(--cor-primaria);
+    color: #fff;
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover {
+    text-decoration: none;
+    background: var(--cor-primaria-escura);
+}
+
+.btn--primary {
+    background: var(--cor-primaria);
+    color: #fff;
+}
+
+.btn--ghost {
+    background: transparent;
+    color: var(--cor-texto);
+    border-color: var(--cor-borda);
+}
+
+.btn--ghost:hover {
+    background: var(--cor-fundo);
+    border-color: #c8d1ce;
+}
+
+.btn--danger {
+    background: var(--cor-alta);
+    color: #fff;
+}
+
+.btn--danger:hover {
+    background: #991b1b;
+}
+
+.btn--sm {
+    padding: 6px 12px;
+    font-size: .9rem;
+}
+
+.btn--block {
+    width: 100%;
+}
+
+/* ---------- Formulários (funciona com {{ form.as_p }}) ---------- */
+form p {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: .92rem;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-sm);
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    transition: border-color .15s, box-shadow .15s;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 3px var(--cor-primaria-clara);
+}
+
+.helptext,
+form ul:not(.errorlist) {
+    display: block;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    margin-top: 4px;
+}
+
+form ul:not(.errorlist) {
+    padding-left: 18px;
+}
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 6px;
+    color: var(--cor-alta);
+    font-size: .88rem;
+}
+
+/* Caixa centralizada para login / cadastro / logout */
+.auth-box {
+    max-width: 420px;
+    margin: 24px auto;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-top: 4px solid var(--cor-primaria);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra-lg);
+    padding: 32px;
+}
+
+.auth-box h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-box__footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: .92rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 24px;
+}
+
+.card h3 {
+    font-size: 1.1rem;
+}
+
+.card p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---------- Cabeçalho de página ---------- */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+/* ---------- Tabela de chamados ---------- */
+.table-wrap {
+    overflow-x: auto;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .95rem;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--cor-borda);
+    white-space: nowrap;
+}
+
+th {
+    background: var(--cor-fundo);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--cor-texto-suave);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: #f9fbfa;
+}
+
+/* ---------- Badges de status e prioridade ---------- */
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Status: use badge--{{ status|slugify }} → aberto, em-andamento, concluido */
+.badge--aberto       { color: var(--cor-aberto);    background: var(--cor-aberto-bg); }
+.badge--em-andamento { color: var(--cor-andamento); background: var(--cor-andamento-bg); }
+.badge--concluido    { color: var(--cor-concluido); background: var(--cor-concluido-bg); }
+
+/* Prioridade: use badge--{{ prioridade|slugify }} → baixa, media, alta */
+.badge--baixa { color: var(--cor-baixa); background: var(--cor-baixa-bg); }
+.badge--media { color: var(--cor-media); background: var(--cor-media-bg); }
+.badge--alta  { color: var(--cor-alta);  background: var(--cor-alta-bg); }
+
+.tag {
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    letter-spacing: .03em;
+}
+
+.tag--adm {
+    background: var(--cor-secundaria);
+    color: #fff;
+}
+
+/* ---------- Mensagens (django.contrib.messages) ---------- */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: grid;
+    gap: 8px;
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--raio-sm);
+    border: 1px solid;
+    font-size: .95rem;
+}
+
+.alert--info    { background: var(--cor-andamento-bg); border-color: #bfdbfe; color: var(--cor-andamento); }
+.alert--success { background: var(--cor-concluido-bg); border-color: #a7f3d0; color: var(--cor-concluido); }
+.alert--warning { background: var(--cor-aberto-bg);    border-color: #fde68a; color: var(--cor-aberto); }
+.alert--error   { background: var(--cor-alta-bg);      border-color: #fecaca; color: var(--cor-alta); }
+
+/* ---------- Estado vazio ---------- */
+.empty {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Rodapé ---------- */
+.footer {
+    background: var(--cor-superficie);
+    border-top: 1px solid var(--cor-borda);
+    font-size: .9rem;
+}
+
+.footer__inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.footer__muted {
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+    .grid--3,
+    .grid--2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .menu-button {
+        display: flex;
+    }
+
+    .nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 8px 0 16px;
+    }
+
+    .menu-toggle:checked ~ .nav {
+        display: flex;
+    }
+
+    .nav__link {
+        padding: 8px 0;
+    }
+
+    .nav__user {
+        border-left: none;
+        padding: 8px 0;
+        border-top: 1px solid var(--cor-borda);
+    }
+
+    .nav .btn,
+    .nav__logout .btn {
+        width: 100%;
+    }
+
+    .auth-box {
+        padding: 24px 20px;
+    }
+}

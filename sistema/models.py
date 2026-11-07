@@ -25,7 +25,7 @@ class Chamado(models.Model):
         BAIXA = 'Baixa', 'Baixa'
         MEDIA = 'Média', 'Média'
         ALTA = 'Alta', 'Alta'  
-
+    cidadao = models.ForeignKey(User, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=100)
     descricao = models.TextField()
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='chamados')
@@ -33,7 +33,7 @@ class Chamado(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
     endereco = models.CharField(max_length=200)
     foto = models.ImageField(upload_to='fotos_chamados/', blank=True, null=True)
-
+    
     class Meta:
         ordering = ['-data_criacao']    
         
@@ -42,7 +42,7 @@ class Chamado(models.Model):
 
 class AdministrarChamado(models.Model):
     chamado = models.ForeignKey(Chamado, on_delete=models.CASCADE, related_name='administracao')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'perfil__tipo_usuario': 'Administrador'})
     data_atualizacao = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=[('Aberto', 'Aberto'), ('Em andamento', 'Em andamento'), ('Concluído', 'Concluído')], default='Aberto')
 

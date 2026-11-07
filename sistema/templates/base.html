@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Início{% endblock %} · Resolve Nova Esperança</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="{{ home_url|default:'/' }}">
+                <span class="brand__icon" aria-hidden="true">✓</span>
+                <span class="brand__text">
+                    <span class="brand__resolve">Resolve</span>
+                    <span class="brand__cidade">Nova Esperança</span>
+                </span>
+            </a>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Abrir menu">
+            <label for="menu-toggle" class="menu-button" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </label>
+
+            <nav class="nav">
+                <a href="{{ home_url|default:'/' }}" class="nav__link">Início</a>
+
+                {% if user.is_authenticated %}
+                    {% if user.perfil.tipo_usuario == 'Administrador' %}
+                        <a href="{{ adm_url|default:'#' }}" class="nav__link">Painel do órgão</a>
+                    {% else %}
+                        <a href="{{ cidadao_url|default:'#' }}" class="nav__link">Meus chamados</a>
+                    {% endif %}
+
+                    <span class="nav__user">
+                        Olá, <strong>{{ user.first_name|default:user.username }}</strong>
+                        {% if user.perfil.tipo_usuario == 'Administrador' %}
+                            <span class="tag tag--adm">{{ user.perfil.orgao.sigla|default:'ADM' }}</span>
+                        {% endif %}
+                    </span>
+
+                    {# No Django 5+ o logout só aceita POST #}
+                    <form method="post" action="{% url 'logout' %}" class="nav__logout">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm">Sair</button>
+                    </form>
+                {% else %}
+                    <a href="{{ login_url|default:'#' }}" class="nav__link">Entrar</a>
+                    <a href="{{ register_url|default:'#' }}" class="btn btn--primary btn--sm">Criar conta</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="alert alert--{{ message.tags|default:'info' }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__inner">
+            <span><strong>Resolve Nova Esperança</strong> · Canal de chamados da cidade de Nova Esperança</span>
+            <span class="footer__muted">© {% now "Y" %}</span>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

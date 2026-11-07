@@ -7,8 +7,10 @@ from .forms import RegisterForm
 
 class LoginView(DjangoLoginView):
     template_name = 'login.html'
+    success_url = reverse_lazy('base')
 class LogoutView(DjangoLogoutView):
     template_name = 'logout.html'
+
 class RegisterView(CreateView):
     template_name = 'register.html'
     form_class = RegisterForm
