@@ -1,0 +1,102 @@
+Listagem de caminhos de pasta para o volume Windows
+O n�mero de s�rie do volume � 7A01-FF63
+C:.
+|   .gitignore
+|   db.sqlite3
+|   estrutura.txt
+|   instrucoes.md
+|   manage.py
+|   README.md
+|   requirements.txt
+|   
++---main
+|   |   asgi.py
+|   |   settings.py
+|   |   urls.py
+|   |   wsgi.py
+|   |   __init__.py
+|   |   
+|   \---__pycache__
+|           settings.cpython-314.pyc
+|           urls.cpython-314.pyc
+|           wsgi.cpython-314.pyc
+|           __init__.cpython-314.pyc
+|           
++---sistema
+|   |   admin.py
+|   |   apps.py
+|   |   forms.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_remove_chamado_status.py
+|   |   |   0003_administrarchamado.py
+|   |   |   0004_chamado_cidadao_alter_administrarchamado_usuario.py
+|   |   |   0005_chamado_status.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-314.pyc
+|   |           0002_remove_chamado_status.cpython-314.pyc
+|   |           0003_administrarchamado.cpython-314.pyc
+|   |           0004_chamado_cidadao_alter_administrarchamado_usuario.cpython-314.pyc
+|   |           0005_chamado_status.cpython-314.pyc
+|   |           __init__.cpython-314.pyc
+|   |           
+|   +---static
+|   |   \---css
+|   |           adm_dashboard.css
+|   |           base.css
+|   |           chamados.css
+|   |           novo_chamado.css
+|   |           
+|   +---templates
+|   |       adm_dashboard.html
+|   |       base.html
+|   |       chamados.html
+|   |       conteudo_base.html
+|   |       navbar.html
+|   |       novo_chamado.html
+|   |       
+|   \---__pycache__
+|           admin.cpython-314.pyc
+|           apps.cpython-314.pyc
+|           forms.cpython-314.pyc
+|           models.cpython-314.pyc
+|           urls.cpython-314.pyc
+|           views.cpython-314.pyc
+|           __init__.cpython-314.pyc
+|           
++---users
+|   |   admin.py
+|   |   apps.py
+|   |   forms.py
+|   |   models.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-314.pyc
+|   |           __init__.cpython-314.pyc
+|   |           
+|   +---static
+|   |   \---css
+|   |           login.css
+|   |           logout.css
+|   |           register.css
+|   |           
+|   +---templates
+|   |       login.html
+|   |       logout.html
+|   \---      register.html
