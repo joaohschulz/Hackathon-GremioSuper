@@ -1,19 +1,24 @@
-{% load static %}
 {% extends "navbar.html" %}
 {% load static %}
 
-{% block title %}Logout · Resolve Nova Esperança{% endblock %}
+{% block title %}Até logo{% endblock %}
 
 {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <link rel="stylesheet" href="{% static 'css/logout.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="logout-container">
-        <h2>Você saiu do sistema</h2>
-        <p>Sua sessão foi encerrada com sucesso.</p>
+<section class="auth">
+    <div class="saida">
+        <span class="saida__icone" aria-hidden="true">👋</span>
+        <h1>Você saiu do sistema</h1>
+        <p>Sua sessão foi encerrada com segurança. Obrigado por ajudar a cuidar de Nova Esperança!</p>
 
-        <a href="{% url 'login' %}">Fazer login novamente</a>
+        <div class="saida__acoes">
+            <a href="{% url 'login' %}" class="btn btn--primary btn--block">Entrar novamente</a>
+            <a href="/" class="btn btn--ghost btn--block">Voltar para o início</a>
+        </div>
     </div>
+</section>
 {% endblock %}
-

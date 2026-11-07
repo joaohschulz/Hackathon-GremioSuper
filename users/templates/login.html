@@ -1,31 +1,63 @@
 {% extends "navbar.html" %}
 {% load static %}
 
-{% block title %}Entrar · Resolve Nova Esperança{% endblock %}
+{% block title %}Entrar{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="login-container">
-            <h1>Seja bem vindo!</h1>
-            <h2>Entrar</h2>
+<section class="auth">
+    <div class="auth__card">
 
-            {% if form.errors %}
-                <p style="color: red;">Usuário ou senha incorretos. Tente novamente.</p>
+        <!-- ===================== LADO DA MARCA ===================== -->
+        <aside class="auth__marca">
+            <span class="auth__logo" aria-hidden="true">✓</span>
+            <h2>Que bom te ver de novo!</h2>
+            <p>Entre para acompanhar seus chamados e ajudar a cuidar de Nova Esperança.</p>
+            <ul class="auth__lista">
+                <li>Abra chamados com foto e endereço</li>
+                <li>Acompanhe o status em tempo real</li>
+                <li>Veja quando o problema for resolvido</li>
+            </ul>
+        </aside>
+
+        <!-- ===================== FORMULÁRIO ===================== -->
+        <div class="auth__form">
+            <div class="auth__cabecalho">
+                <h1>Entrar</h1>
+                <p>Use seu usuário e senha para acessar.</p>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert--error auth__alerta">
+                    {% for erro in form.non_field_errors %}{{ erro }}{% endfor %}
+                </div>
+            {% elif form.errors %}
+                <div class="alert alert--error auth__alerta">Usuário ou senha incorretos. Tente novamente.</div>
             {% endif %}
 
-            <form method="post">
+            <form method="post" novalidate>
                 {% csrf_token %}
-                
-                {{ form.as_p }}
+                <input type="hidden" name="next" value="{{ next }}">
 
-                <button type="submit">Entrar</button>
+                {% for field in form %}
+                    <div class="auth-campo {% if field.errors %}auth-campo--erro{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn--primary btn--block auth__botao">Entrar</button>
             </form>
 
-            <p>
-                <a href="{% url 'login' %}">Esqueceu a senha?</a>
+            <p class="auth__rodape">
+                Ainda não tem conta? <a href="{% url 'register' %}">Criar conta grátis</a>
             </p>
         </div>
+
+    </div>
+</section>
 {% endblock %}
