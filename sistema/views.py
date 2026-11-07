@@ -4,6 +4,10 @@ from sistema.models import Chamado, AdministrarChamado
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ChamadoForm, AdmChamadoForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import get_object_or_404
+
+
 
 
 # Create your views here.
@@ -29,7 +33,63 @@ class NovoChamadoView(LoginRequiredMixin, CreateView):
     model = Chamado
     success_url = reverse_lazy('chamados')
     
+    # aq ele seta o cidadao do chamado como o usuário logado antes de salvar
     def form_valid(self, form):
         form.instance.cidadao = self.request.user
         return super().form_valid(form)
     
+class AdmChamadoView(LoginRequiredMixin, ListView):
+    form_class = AdmChamadoForm
+    login_url = 'login'
+    context_object_name = 'adm_chamados'    
+    template_name = 'adm_dashboard.html'
+    model = AdministrarChamado
+    
+    # contexto para pegar os chamados do orgão do usuário logado
+    def get_queryset(self):
+        orgao = self.request.user.perfil.orgao
+        return Chamado.objects.filter(categoria__orgao=orgao)
+    
+class VerChamadoView(LoginRequiredMixin, TemplateView):
+    template_name = 'ver_chamado.html'
+    login_url = 'login'
+    
+    # isso aq basicamente serve para pegar o chamado pelo id 
+    # que vem na url e passar para o contexto da página
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        chamado_id = self.kwargs.get('chamado_id')
+        chamado = Chamado.objects.get(id=chamado_id)
+        context['chamado'] = chamado
+        return context
+    
+class GerenciarChamadoView(LoginRequiredMixin, CreateView):
+    form_class = AdmChamadoForm
+    login_url = 'login'
+    template_name = 'gerenciar_chamados.html'
+    model = AdministrarChamado
+    success_url = reverse_lazy('adm_chamados')
+    
+    # isso aq basicamente serve para pegar o chamado pelo id 
+    # que vem na url e passar para o contexto da página
+    # se n der, ele retorna 404
+    def get_chamado(self):
+        return get_object_or_404(Chamado, id=self.kwargs.get('chamado_id'))
+    
+    # aq ele pega o status do chamado e seta no form
+    # para que o admin possa ver o status atual do chamado
+    def get_initial_status(self):
+        chamado = self.get_chamado()
+        return {'status': chamado.status, 'usuario': self.request.user}
+    
+    # aq o get_context_data passa o chamado para o template
+    # para que ele possa ser exibido na página
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['chamado'] = self.get_chamado()
+        return context
+    
+    # aq o form_valid seta o chamado no form antes de salvar
+    def form_valid(self, form):
+        form.instance.chamado = self.get_chamado()
+        return super().form_valid(form)

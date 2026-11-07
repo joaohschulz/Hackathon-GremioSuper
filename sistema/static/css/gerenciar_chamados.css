@@ -1,0 +1,370 @@
+/* ==========================================================================
+   Resolve Nova Esperança — gerenciar_chamados.css
+   Tela do administrador para atualizar status e responsável (gerenciar_chamados.html)
+   Usa as variáveis e classes globais definidas em base.css
+   ========================================================================== */
+
+/* ---------- Trilha (breadcrumb) ---------- */
+.trilha {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+    margin-bottom: 14px;
+}
+
+.trilha a {
+    color: var(--cor-texto-suave);
+}
+
+.trilha a:hover {
+    color: var(--cor-primaria);
+}
+
+.trilha span:last-child {
+    color: var(--cor-texto);
+    font-weight: 600;
+}
+
+.page-header__sub {
+    margin: 4px 0 0;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Layout ---------- */
+.gerenciar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+.gerenciar__form {
+    padding: 8px 28px 28px;
+}
+
+.gerenciar__lateral {
+    display: grid;
+    gap: 20px;
+    position: sticky;
+    top: 88px;
+}
+
+/* ---------- Blocos do formulário ---------- */
+.bloco {
+    border: none;
+    margin: 0;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.bloco__titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.bloco__titulo span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    color: #fff;
+    font-size: .9rem;
+}
+
+.bloco__ajuda {
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+    margin-bottom: 16px;
+}
+
+/* ---------- Opções de status (rádios em cartão) ---------- */
+.status-opcoes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.status-opcao {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 0;
+    padding: 16px;
+    border: 2px solid var(--cor-borda);
+    border-radius: var(--raio);
+    background: var(--cor-superficie);
+    cursor: pointer;
+    font-weight: 400;
+    transition: border-color .15s, background .15s, transform .15s;
+}
+
+.status-opcao:hover {
+    border-color: #c8d1ce;
+    transform: translateY(-1px);
+}
+
+.status-opcao input {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+.status-opcao__icone {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.status-opcao__nome {
+    font-weight: 700;
+}
+
+.status-opcao__desc {
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    line-height: 1.4;
+}
+
+.status-opcao--aberto input       { accent-color: var(--cor-aberto); }
+.status-opcao--em-andamento input { accent-color: var(--cor-andamento); }
+.status-opcao--concluido input    { accent-color: var(--cor-concluido); }
+
+.status-opcao--aberto:has(input:checked) {
+    border-color: var(--cor-aberto);
+    background: var(--cor-aberto-bg);
+}
+
+.status-opcao--em-andamento:has(input:checked) {
+    border-color: var(--cor-andamento);
+    background: var(--cor-andamento-bg);
+}
+
+.status-opcao--concluido:has(input:checked) {
+    border-color: var(--cor-concluido);
+    background: var(--cor-concluido-bg);
+}
+
+.status-opcao:has(input:focus-visible) {
+    outline: 3px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
+/* ---------- Campo responsável ---------- */
+.campo label {
+    margin-bottom: 8px;
+}
+
+.campo__ajuda {
+    display: block;
+    margin-top: 6px;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+.campo--erro select {
+    border-color: var(--cor-alta);
+}
+
+.gerenciar .errorlist {
+    margin: 8px 0 0;
+}
+
+/* ---------- Ações ---------- */
+.gerenciar__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+}
+
+/* ---------- Resumo do chamado (lateral) ---------- */
+.resumo-chamado {
+    padding: 0;
+    overflow: hidden;
+    border-top: 5px solid var(--cor-aberto);
+}
+
+.resumo-chamado--em-andamento { border-top-color: var(--cor-andamento); }
+.resumo-chamado--concluido    { border-top-color: var(--cor-concluido); }
+
+.resumo-chamado__foto {
+    display: block;
+    background: var(--cor-fundo);
+}
+
+.resumo-chamado__foto img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.resumo-chamado__corpo {
+    padding: 20px;
+}
+
+.resumo-chamado__protocolo {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+.resumo-chamado h2 {
+    font-size: 1.15rem;
+    margin: 2px 0 8px;
+    word-break: break-word;
+}
+
+.resumo-chamado__desc {
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+    margin-bottom: 14px;
+}
+
+.resumo-chamado__dados {
+    margin: 0 0 16px;
+}
+
+.resumo-chamado__dados > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--cor-borda);
+    font-size: .88rem;
+}
+
+.resumo-chamado__dados > div:last-child {
+    border-bottom: none;
+}
+
+.resumo-chamado__dados dt {
+    color: var(--cor-texto-suave);
+    flex-shrink: 0;
+}
+
+.resumo-chamado__dados dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+}
+
+/* ---------- Histórico ---------- */
+.historico-box {
+    padding: 20px;
+}
+
+.historico-box h3 {
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--cor-texto-suave);
+    margin-bottom: 14px;
+}
+
+.historico-box__vazio {
+    margin: 0;
+    font-size: .9rem;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+.historico {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.historico::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--cor-borda);
+}
+
+.historico__item {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    padding: 0 0 14px 24px;
+    font-size: .88rem;
+}
+
+.historico__item:last-child {
+    padding-bottom: 0;
+}
+
+.historico__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cor-aberto);
+    border: 2px solid var(--cor-superficie);
+}
+
+.historico__item--em-andamento::before { background: var(--cor-andamento); }
+.historico__item--concluido::before    { background: var(--cor-concluido); }
+
+.historico__item time {
+    width: 100%;
+    font-size: .8rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 900px) {
+    .gerenciar {
+        grid-template-columns: 1fr;
+    }
+
+    .gerenciar__lateral {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .gerenciar__form {
+        padding: 4px 18px 20px;
+    }
+
+    .status-opcoes {
+        grid-template-columns: 1fr;
+    }
+
+    .gerenciar__acoes {
+        flex-direction: column-reverse;
+    }
+
+    .gerenciar__acoes .btn {
+        width: 100%;
+    }
+}

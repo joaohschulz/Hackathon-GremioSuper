@@ -1,0 +1,456 @@
+/* ==========================================================================
+   Resolve Nova Esperança — adm_dashboard.css
+   Painel do administrador do órgão (adm_dashboard.html)
+   Usa as variáveis e classes globais definidas em base.css
+   ========================================================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------- Cabeçalho ---------- */
+.painel-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.painel-topo h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 1.7rem;
+    margin: 4px 0 6px;
+}
+
+.painel-topo__eyebrow {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--cor-primaria);
+}
+
+.painel-topo__sigla {
+    font-size: .8rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--cor-secundaria);
+    color: #fff;
+    letter-spacing: .04em;
+}
+
+.painel-topo__sub {
+    margin: 0;
+    color: var(--cor-texto-suave);
+}
+
+.painel-topo__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.painel-topo__user strong,
+.painel-topo__user small {
+    display: block;
+    line-height: 1.3;
+}
+
+.painel-topo__user small {
+    color: var(--cor-texto-suave);
+    font-size: .8rem;
+}
+
+.painel-topo__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ---------- Indicadores (também são os filtros) ---------- */
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.indicador {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 16px 18px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-top: 4px solid var(--cor-texto-suave);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    font-weight: 400;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .15s, background .15s, border-color .15s;
+}
+
+.indicador:hover {
+    transform: translateY(-2px);
+    border-color: #c8d1ce;
+}
+
+.indicador--aberto       { border-top-color: var(--cor-aberto); }
+.indicador--em-andamento { border-top-color: var(--cor-andamento); }
+.indicador--concluido    { border-top-color: var(--cor-concluido); }
+.indicador--alta         { border-top-color: var(--cor-alta); }
+
+.indicador__rotulo {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--cor-texto-suave);
+}
+
+.indicador__numero {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+/* quando não há nenhum, o template deixa vazio */
+.indicador__numero:empty::before {
+    content: "0";
+}
+
+.indicador--aberto .indicador__numero       { color: var(--cor-aberto); }
+.indicador--em-andamento .indicador__numero { color: var(--cor-andamento); }
+.indicador--concluido .indicador__numero    { color: var(--cor-concluido); }
+.indicador--alta .indicador__numero         { color: var(--cor-alta); }
+
+.indicador__desc {
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Filtro só com CSS ---------- */
+.filtro__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* indicador ativo */
+#f-todos:checked        ~ .indicadores label[for="f-todos"],
+#f-aberto:checked       ~ .indicadores label[for="f-aberto"],
+#f-em-andamento:checked ~ .indicadores label[for="f-em-andamento"],
+#f-concluido:checked    ~ .indicadores label[for="f-concluido"],
+#f-alta:checked         ~ .indicadores label[for="f-alta"] {
+    background: var(--cor-primaria-clara);
+    border-color: var(--cor-primaria);
+}
+
+/* foco pelo teclado */
+#f-todos:focus-visible        ~ .indicadores label[for="f-todos"],
+#f-aberto:focus-visible       ~ .indicadores label[for="f-aberto"],
+#f-em-andamento:focus-visible ~ .indicadores label[for="f-em-andamento"],
+#f-concluido:focus-visible    ~ .indicadores label[for="f-concluido"],
+#f-alta:focus-visible         ~ .indicadores label[for="f-alta"] {
+    outline: 3px solid var(--cor-primaria);
+    outline-offset: 2px;
+}
+
+/* esconde as linhas que não são do filtro escolhido */
+#f-aberto:checked       ~ .tabela-chamados .linha:not(.linha--aberto),
+#f-em-andamento:checked ~ .tabela-chamados .linha:not(.linha--em-andamento),
+#f-concluido:checked    ~ .tabela-chamados .linha:not(.linha--concluido),
+#f-alta:checked         ~ .tabela-chamados .linha:not(.linha--prioridade-alta) {
+    display: none;
+}
+
+/* mensagem de "nenhum chamado" quando o filtro não encontra nada */
+.filtro__vazio {
+    display: none;
+}
+
+.filtro:has(#f-aberto:checked):not(:has(.linha--aberto)) .filtro__vazio,
+.filtro:has(#f-em-andamento:checked):not(:has(.linha--em-andamento)) .filtro__vazio,
+.filtro:has(#f-concluido:checked):not(:has(.linha--concluido)) .filtro__vazio,
+.filtro:has(#f-alta:checked):not(:has(.linha--prioridade-alta)) .filtro__vazio {
+    display: block;
+}
+
+/* ---------- Lista de chamados (cartões, sem rolagem lateral) ---------- */
+.lista-adm {
+    display: grid;
+    gap: 12px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) 220px auto;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-left: 5px solid var(--cor-aberto);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    transition: box-shadow .15s, transform .15s;
+}
+
+.linha:hover {
+    box-shadow: var(--sombra-lg);
+    transform: translateY(-1px);
+}
+
+.linha--em-andamento { border-left-color: var(--cor-andamento); }
+.linha--concluido    { border-left-color: var(--cor-concluido); }
+
+/* prioridade alta e ainda não concluído: destaque leve */
+.linha--prioridade-alta:not(.linha--concluido) {
+    background: #fffafa;
+}
+
+/* Foto */
+.linha__foto {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--raio-sm);
+    overflow: hidden;
+    background: var(--cor-fundo);
+}
+
+.linha__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.linha__foto--vazia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    opacity: .6;
+}
+
+/* Informações */
+.linha__info {
+    min-width: 0;
+}
+
+.linha__topo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.linha__protocolo {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    margin-right: 4px;
+}
+
+.linha__titulo {
+    font-size: 1.05rem;
+    margin: 0 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.linha__desc {
+    font-size: .88rem;
+    color: var(--cor-texto-suave);
+    margin: 0 0 6px;
+}
+
+.linha__meta {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+/* Pessoas */
+.linha__pessoas {
+    margin: 0;
+    display: grid;
+    gap: 10px;
+    padding-left: 20px;
+    border-left: 1px solid var(--cor-borda);
+    min-width: 0;
+}
+
+.linha__pessoas dt {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--cor-texto-suave);
+}
+
+.linha__pessoas dd {
+    margin: 0;
+    font-size: .9rem;
+    min-width: 0;
+}
+
+.linha__pessoas strong,
+.linha__pessoas small {
+    display: block;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.linha__pessoas small {
+    font-size: .8rem;
+    color: var(--cor-texto-suave);
+}
+
+.sem-responsavel {
+    font-size: .85rem;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+/* Ações */
+.linha__acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.linha__acoes .btn {
+    white-space: nowrap;
+}
+
+/* ---------- Estado vazio ---------- */
+.painel-vazio {
+    text-align: center;
+    max-width: 520px;
+    margin: 32px auto;
+    padding: 48px 32px;
+}
+
+.painel-vazio__icone {
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.painel-vazio p {
+    color: var(--cor-texto-suave);
+    margin: 0;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1000px) {
+    .indicadores {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* pessoas descem para baixo das informações; ações continuam à direita */
+    .linha {
+        grid-template-columns: 64px minmax(0, 1fr) auto;
+    }
+
+    .linha__pessoas {
+        grid-column: 2 / 3;
+        grid-row: 2;
+        grid-template-columns: 1fr 1fr;
+        padding: 10px 0 0;
+        border-left: none;
+        border-top: 1px solid var(--cor-borda);
+    }
+
+    .linha__acoes {
+        grid-column: 3;
+        grid-row: 1 / 3;
+    }
+
+    .linha__foto {
+        width: 64px;
+        height: 64px;
+    }
+}
+
+@media (max-width: 600px) {
+    .indicadores {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .indicador__numero {
+        font-size: 1.6rem;
+    }
+
+    .painel-topo__user {
+        width: 100%;
+    }
+
+    /* celular: tudo empilhado e botões lado a lado no rodapé do cartão */
+    .linha {
+        grid-template-columns: 56px minmax(0, 1fr);
+        gap: 12px 14px;
+        padding: 14px;
+    }
+
+    .linha__foto {
+        width: 56px;
+        height: 56px;
+        align-self: start;
+    }
+
+    .linha__titulo {
+        white-space: normal;
+    }
+
+    .linha__pessoas {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .linha__acoes {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        flex-direction: row;
+    }
+
+    .linha__acoes .btn {
+        flex: 1;
+    }
+}

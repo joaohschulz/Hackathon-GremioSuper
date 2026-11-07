@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gerenciar #{{ chamado.pk|stringformat:"05d" }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/gerenciar_chamados.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% with historico=chamado.administracao.all %}
+
+<nav class="trilha" aria-label="Você está em">
+    <a href="{% url 'adm_chamados' %}">Painel</a>
+    <span aria-hidden="true">›</span>
+    <a href="{% url 'ver_chamado' chamado.pk %}">Chamado #{{ chamado.pk|stringformat:"05d" }}</a>
+    <span aria-hidden="true">›</span>
+    <span>Gerenciar</span>
+</nav>
+
+<div class="page-header">
+    <div>
+        <h1>Gerenciar chamado</h1>
+        <p class="page-header__sub">Atualize o status e defina quem é o responsável por este chamado.</p>
+    </div>
+</div>
+
+<div class="gerenciar">
+
+    <!-- ===================== FORMULÁRIO ===================== -->
+    <form method="post" class="card gerenciar__form" novalidate>
+        {% csrf_token %}
+
+        {# O form ainda tem o campo "chamado"; mandamos o id escondido para ele validar #}
+        <input type="hidden" name="chamado" value="{{ chamado.pk }}">
+
+        {% if form.non_field_errors or form.chamado.errors %}
+            <div class="alert alert--error">
+                {{ form.non_field_errors }}
+                {{ form.chamado.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Status -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>1</span> Novo status</legend>
+            <p class="bloco__ajuda">
+                Status atual:
+                <span class="badge badge--{{ chamado.status|slugify }}">{{ chamado.get_status_display }}</span>
+            </p>
+
+            <div class="status-opcoes">
+                {% for opcao in form.status %}
+                    <label class="status-opcao status-opcao--{{ opcao.data.value|slugify }}">
+                        <input type="radio"
+                               name="{{ form.status.html_name }}"
+                               value="{{ opcao.data.value }}"
+                               {% if form.is_bound %}{% if opcao.data.selected %}checked{% endif %}{% elif opcao.data.value == chamado.status %}checked{% endif %}>
+                        <span class="status-opcao__icone" aria-hidden="true">
+                            {% if opcao.data.value == 'Aberto' %}📥{% elif opcao.data.value == 'Em andamento' %}🛠️{% else %}✅{% endif %}
+                        </span>
+                        <span class="status-opcao__nome">{{ opcao.choice_label }}</span>
+                        <span class="status-opcao__desc">
+                            {% if opcao.data.value == 'Aberto' %}Aguardando análise da equipe.
+                            {% elif opcao.data.value == 'Em andamento' %}Equipe designada e serviço em execução.
+                            {% else %}Problema resolvido no local.{% endif %}
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
+            {{ form.status.errors }}
+        </fieldset>
+
+        <!-- Responsável -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>2</span> Responsável</legend>
+
+            <div class="campo {% if form.usuario.errors %}campo--erro{% endif %}">
+                <label for="{{ form.usuario.id_for_label }}">Quem vai cuidar deste chamado?</label>
+                <select name="{{ form.usuario.html_name }}" id="{{ form.usuario.id_for_label }}" required>
+                    {% for opcao in form.usuario %}
+                        <option value="{{ opcao.data.value }}"
+                            {% if form.is_bound %}{% if opcao.data.selected %}selected{% endif %}{% elif opcao.data.value|stringformat:"s" == user.pk|stringformat:"s" %}selected{% endif %}>
+                            {{ opcao.choice_label }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <small class="campo__ajuda">Apenas usuários administradores aparecem na lista.</small>
+                {{ form.usuario.errors }}
+            </div>
+        </fieldset>
+
+        <div class="gerenciar__acoes">
+            <a href="{% url 'ver_chamado' chamado.pk %}" class="btn btn--ghost">Cancelar</a>
+            <button type="submit" class="btn btn--primary btn--lg">Salvar alterações</button>
+        </div>
+    </form>
+
+    <!-- ===================== LATERAL: RESUMO + HISTÓRICO ===================== -->
+    <aside class="gerenciar__lateral">
+
+        <section class="card resumo-chamado resumo-chamado--{{ chamado.status|slugify }}">
+            {% if chamado.foto %}
+                <a href="{{ chamado.foto.url }}" target="_blank" class="resumo-chamado__foto">
+                    <img src="{{ chamado.foto.url }}" alt="Foto do chamado">
+                </a>
+            {% endif %}
+
+            <div class="resumo-chamado__corpo">
+                <span class="resumo-chamado__protocolo">#{{ chamado.pk|stringformat:"05d" }}</span>
+                <h2>{{ chamado.titulo }}</h2>
+                <p class="resumo-chamado__desc">{{ chamado.descricao|truncatechars:160 }}</p>
+
+                <dl class="resumo-chamado__dados">
+                    <div><dt>Categoria</dt><dd>{{ chamado.categoria.nome }}</dd></div>
+                    <div><dt>Prioridade</dt><dd><span class="badge badge--{{ chamado.prioridade|slugify }}">{{ chamado.get_prioridade_display }}</span></dd></div>
+                    <div><dt>Endereço</dt><dd>{{ chamado.endereco }}</dd></div>
+                    <div><dt>Cidadão</dt><dd>{{ chamado.cidadao.get_full_name|default:chamado.cidadao.username }}</dd></div>
+                    <div><dt>Aberto em</dt><dd>{{ chamado.data_criacao|date:"d/m/Y H:i" }}</dd></div>
+                </dl>
+
+                <a href="{% url 'ver_chamado' chamado.pk %}" class="btn btn--ghost btn--sm btn--block">Ver chamado completo</a>
+            </div>
+        </section>
+
+        <section class="card historico-box">
+            <h3>Histórico</h3>
+            {% if historico %}
+                <ol class="historico">
+                    {% for item in historico %}
+                        <li class="historico__item historico__item--{{ item.status|slugify }}">
+                            <span class="badge badge--{{ item.status|slugify }}">{{ item.get_status_display }}</span>
+                            <span>por <strong>{{ item.usuario.username }}</strong></span>
+                            <time>{{ item.data_atualizacao|date:"d/m/Y \à\s H:i" }}</time>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p class="historico-box__vazio">Nenhuma atualização ainda. Esta será a primeira.</p>
+            {% endif %}
+        </section>
+
+    </aside>
+</div>
+
+{% endwith %}
+
+{% endblock %}

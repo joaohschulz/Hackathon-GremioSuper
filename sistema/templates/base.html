@@ -29,7 +29,7 @@
 
                 {% if user.is_authenticated %}
                     {% if user.perfil.tipo_usuario == 'Administrador' %}
-                        <a href="{{ adm_url|default:'#' }}" class="nav__link">Painel do órgão</a>
+                        <a href="{% url 'adm_chamados' %}" class="nav__link">Painel do órgão</a>
                     {% else %}
                         <a href="{% url 'chamados' %}" class="nav__link">Meus chamados</a>
                     {% endif %}
