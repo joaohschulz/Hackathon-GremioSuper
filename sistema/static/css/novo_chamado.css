@@ -1,0 +1,338 @@
+/* ==========================================================================
+   Resolve Nova Esperança — novo_chamado.css
+   Página "Abrir novo chamado" (novo_chamado.html)
+   Usa as variáveis e classes globais definidas em base.css
+   ========================================================================== */
+
+/* ---------- Topo ---------- */
+.voltar {
+    display: inline-block;
+    font-size: .92rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--cor-texto-suave);
+}
+
+.voltar:hover {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+.page-header__sub {
+    margin: 4px 0 0;
+    color: var(--cor-texto-suave);
+    max-width: 640px;
+}
+
+/* ---------- Layout: formulário + lateral ---------- */
+.novo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+.novo__form {
+    padding: 8px 28px 28px;
+}
+
+/* ---------- Blocos do formulário ---------- */
+.bloco {
+    border: none;
+    margin: 0;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.bloco:last-of-type {
+    border-bottom: none;
+}
+
+.bloco__titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.08rem;
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 18px;
+}
+
+.bloco__titulo span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cor-primaria);
+    color: #fff;
+    font-size: .9rem;
+}
+
+.bloco__titulo em {
+    font-style: normal;
+    font-weight: 400;
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Campos ---------- */
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo:last-child {
+    margin-bottom: 0;
+}
+
+.campo__ajuda {
+    display: block;
+    margin-top: 6px;
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+.campo--erro input,
+.campo--erro select,
+.campo--erro textarea {
+    border-color: var(--cor-alta);
+}
+
+.campo--erro input:focus,
+.campo--erro select:focus,
+.campo--erro textarea:focus {
+    box-shadow: 0 0 0 3px var(--cor-alta-bg);
+}
+
+.novo .errorlist {
+    margin: 6px 0 0;
+}
+
+/* ---------- Prioridade (rádios em forma de cartão) ---------- */
+.prioridades {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.prioridade {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 14px 16px 14px 42px;
+    border: 2px solid var(--cor-borda);
+    border-radius: var(--raio);
+    cursor: pointer;
+    font-weight: 400;
+    transition: border-color .15s, background .15s;
+}
+
+.prioridade:hover {
+    border-color: #c8d1ce;
+}
+
+.prioridade input {
+    position: absolute;
+    left: 16px;
+    top: 17px;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--cor-primaria);
+}
+
+.prioridade__nome {
+    font-weight: 700;
+}
+
+.prioridade__desc {
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    line-height: 1.4;
+}
+
+.prioridade--baixa .prioridade__nome { color: var(--cor-baixa); }
+.prioridade--media .prioridade__nome { color: var(--cor-media); }
+.prioridade--alta  .prioridade__nome { color: var(--cor-alta); }
+
+.prioridade--baixa:has(input:checked) { border-color: var(--cor-baixa); background: var(--cor-baixa-bg); }
+.prioridade--media:has(input:checked) { border-color: var(--cor-media); background: var(--cor-media-bg); }
+.prioridade--alta:has(input:checked)  { border-color: var(--cor-alta);  background: var(--cor-alta-bg); }
+
+.prioridade--baixa input { accent-color: var(--cor-baixa); }
+.prioridade--media input { accent-color: var(--cor-media); }
+.prioridade--alta  input { accent-color: var(--cor-alta); }
+
+/* ---------- Upload de foto ---------- */
+.upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 28px 20px;
+    border: 2px dashed var(--cor-borda);
+    border-radius: var(--raio);
+    background: var(--cor-fundo);
+    text-align: center;
+    transition: border-color .15s, background .15s;
+}
+
+.upload:hover,
+.upload:focus-within {
+    border-color: var(--cor-primaria);
+    background: var(--cor-primaria-clara);
+}
+
+.upload.campo--erro {
+    border-color: var(--cor-alta);
+}
+
+.upload__icone {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.upload__rotulo {
+    margin: 0;
+    color: var(--cor-primaria);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.upload__ajuda {
+    color: var(--cor-texto-suave);
+    font-size: .82rem;
+    margin-bottom: 8px;
+}
+
+/* Campo de arquivo nativo (sem JavaScript): o navegador mostra o nome do arquivo */
+.upload__input[type="file"] {
+    width: auto;
+    max-width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+    cursor: pointer;
+}
+
+.upload__input[type="file"]:focus {
+    box-shadow: none;
+}
+
+.upload__input::file-selector-button {
+    font: inherit;
+    font-weight: 600;
+    margin-right: 12px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--raio-sm);
+    background: var(--cor-primaria);
+    color: #fff;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.upload__input::file-selector-button:hover {
+    background: var(--cor-primaria-escura);
+}
+
+/* ---------- Ações ---------- */
+.novo__acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--cor-borda);
+}
+
+/* ---------- Lateral ---------- */
+.novo__lateral {
+    display: grid;
+    gap: 16px;
+    position: sticky;
+    top: 88px;
+}
+
+.dica {
+    padding: 20px;
+}
+
+.dica h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.dica ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: .9rem;
+    color: var(--cor-texto-suave);
+}
+
+.dica ul li + li {
+    margin-top: 6px;
+}
+
+.dica__passos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+    font-size: .88rem;
+    color: var(--cor-texto-suave);
+}
+
+.dica__passos .badge {
+    display: table;
+    margin-bottom: 2px;
+}
+
+.dica--alerta {
+    background: var(--cor-alta-bg);
+    border: 1px solid #fecaca;
+    border-left: 4px solid var(--cor-alta);
+    border-radius: var(--raio);
+    font-size: .88rem;
+    line-height: 1.5;
+}
+
+.dica--alerta > strong:first-child {
+    display: block;
+    color: var(--cor-alta);
+    margin-bottom: 4px;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 900px) {
+    .novo {
+        grid-template-columns: 1fr;
+    }
+
+    .novo__lateral {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .novo__form {
+        padding: 4px 18px 20px;
+    }
+
+    .prioridades {
+        grid-template-columns: 1fr;
+    }
+
+    .novo__acoes {
+        flex-direction: column-reverse;
+    }
+
+    .novo__acoes .btn {
+        width: 100%;
+    }
+}

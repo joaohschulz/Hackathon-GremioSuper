@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Novo chamado{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/novo_chamado.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% url 'chamados' as chamados_url %}
+
+<a href="{{ chamados_url|default:'#' }}" class="voltar">← Voltar para meus chamados</a>
+
+<div class="page-header">
+    <div>
+        <h1>Abrir novo chamado</h1>
+        <p class="page-header__sub">
+            Conte o que está acontecendo. Seu chamado será encaminhado ao órgão responsável de Nova Esperança.
+        </p>
+    </div>
+</div>
+
+<div class="novo">
+
+    <!-- ===================== FORMULÁRIO ===================== -->
+    <form method="post" enctype="multipart/form-data" class="novo__form card" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert--error">
+                {% for erro in form.non_field_errors %}{{ erro }}{% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- 1. O problema -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>1</span> Qual é o problema?</legend>
+
+            <div class="campo {% if form.titulo.errors %}campo--erro{% endif %}">
+                <label for="{{ form.titulo.id_for_label }}">Título</label>
+                <input type="text"
+                       name="{{ form.titulo.html_name }}"
+                       id="{{ form.titulo.id_for_label }}"
+                       value="{{ form.titulo.value|default:'' }}"
+                       maxlength="100"
+                       placeholder="Ex.: Buraco grande na Rua das Flores"
+                       required>
+                {{ form.titulo.errors }}
+            </div>
+
+            <div class="campo {% if form.categoria.errors %}campo--erro{% endif %}">
+                <label for="{{ form.categoria.id_for_label }}">Categoria</label>
+                {{ form.categoria }}
+                <small class="campo__ajuda">A categoria define qual órgão vai receber o seu chamado.</small>
+                {{ form.categoria.errors }}
+            </div>
+
+            <div class="campo {% if form.descricao.errors %}campo--erro{% endif %}">
+                <label for="{{ form.descricao.id_for_label }}">Descrição</label>
+                <textarea name="{{ form.descricao.html_name }}"
+                          id="{{ form.descricao.id_for_label }}"
+                          rows="5"
+                          placeholder="Descreva o problema: o que está acontecendo, desde quando e se oferece algum risco."
+                          required>{{ form.descricao.value|default:'' }}</textarea>
+                {{ form.descricao.errors }}
+            </div>
+        </fieldset>
+
+        <!-- 2. Onde -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>2</span> Onde fica?</legend>
+
+            <div class="campo {% if form.endereco.errors %}campo--erro{% endif %}">
+                <label for="{{ form.endereco.id_for_label }}">Endereço</label>
+                <input type="text"
+                       name="{{ form.endereco.html_name }}"
+                       id="{{ form.endereco.id_for_label }}"
+                       value="{{ form.endereco.value|default:'' }}"
+                       maxlength="200"
+                       placeholder="Rua, número aproximado, bairro e ponto de referência"
+                       required>
+                {{ form.endereco.errors }}
+            </div>
+        </fieldset>
+
+        <!-- 3. Prioridade -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>3</span> Qual a urgência?</legend>
+
+            <div class="prioridades {% if form.prioridade.errors %}campo--erro{% endif %}">
+                {% for opcao in form.prioridade %}
+                    <label class="prioridade prioridade--{{ opcao.data.value|slugify }}">
+                        <input type="radio"
+                               name="{{ form.prioridade.html_name }}"
+                               value="{{ opcao.data.value }}"
+                               {% if opcao.data.selected %}checked{% endif %}>
+                        <span class="prioridade__nome">{{ opcao.choice_label }}</span>
+                        <span class="prioridade__desc">
+                            {% if opcao.data.value == 'Baixa' %}Incomoda, mas não oferece risco.
+                            {% elif opcao.data.value == 'Alta' %}Oferece risco às pessoas ou ao trânsito.
+                            {% else %}Atrapalha a rotina de quem passa pelo local.{% endif %}
+                        </span>
+                    </label>
+                {% endfor %}
+            </div>
+            {{ form.prioridade.errors }}
+        </fieldset>
+
+        <!-- 4. Foto -->
+        <fieldset class="bloco">
+            <legend class="bloco__titulo"><span>4</span> Foto do local <em>(opcional)</em></legend>
+
+            <div class="upload {% if form.foto.errors %}campo--erro{% endif %}">
+                <span class="upload__icone" aria-hidden="true">📷</span>
+                <label for="{{ form.foto.id_for_label }}" class="upload__rotulo">Escolha uma foto do local</label>
+                <small class="upload__ajuda">JPG ou PNG. Uma boa foto ajuda a equipe a encontrar o problema.</small>
+                {# Campo nativo: o próprio navegador mostra o nome do arquivo escolhido #}
+                <input type="file"
+                       name="{{ form.foto.html_name }}"
+                       id="{{ form.foto.id_for_label }}"
+                       accept="image/*"
+                       class="upload__input">
+            </div>
+            {{ form.foto.errors }}
+        </fieldset>
+
+        <div class="novo__acoes">
+            <a href="{{ chamados_url|default:'#' }}" class="btn btn--ghost">Cancelar</a>
+            <button type="submit" class="btn btn--primary btn--lg">Enviar chamado</button>
+        </div>
+    </form>
+
+    <!-- ===================== LATERAL ===================== -->
+    <aside class="novo__lateral">
+        <div class="card dica">
+            <h3>💡 Dicas para um bom chamado</h3>
+            <ul>
+                <li>Use um título curto que resuma o problema.</li>
+                <li>Informe um ponto de referência no endereço.</li>
+                <li>Envie uma foto que mostre bem o local.</li>
+                <li>Abra um chamado para cada problema.</li>
+            </ul>
+        </div>
+
+        <div class="card dica">
+            <h3>📋 O que acontece depois?</h3>
+            <ol class="dica__passos">
+                <li><span class="badge badge--aberto">Aberto</span> Seu chamado entra na fila do órgão.</li>
+                <li><span class="badge badge--em-andamento">Em andamento</span> Uma equipe assume o serviço.</li>
+                <li><span class="badge badge--concluido">Concluído</span> O problema foi resolvido.</li>
+            </ol>
+        </div>
+
+        <div class="dica dica--alerta">
+            <strong>⚠️ Emergência?</strong>
+            Fios caídos, incêndios ou acidentes: ligue <strong>193</strong> (Bombeiros) ou <strong>199</strong> (Defesa Civil).
+        </div>
+    </aside>
+</div>
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meus chamados{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/chamados.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================== CABEÇALHO ===================== -->
+<div class="page-header">
+    <div>
+        <h1>Meus chamados</h1>
+        <p class="page-header__sub">
+            Acompanhe os problemas que você reportou em Nova Esperança.
+        </p>
+    </div>
+    <a href="{% url 'novo_chamado' %}" class="btn btn--primary">+ Novo chamado</a>
+</div>
+
+{% if chamados %}
+
+    {# Agrupa os chamados por status só para contar quantos tem de cada (sem JavaScript) #}
+    {% regroup chamados|dictsort:"status" by status as grupos %}
+
+    {#  Filtro feito só com CSS: cada rádio escondido controla quais cartões aparecem. #}
+    <div class="filtro">
+        <input type="radio" name="filtro" id="f-todos"        class="filtro__radio" checked>
+        <input type="radio" name="filtro" id="f-aberto"       class="filtro__radio">
+        <input type="radio" name="filtro" id="f-em-andamento" class="filtro__radio">
+        <input type="radio" name="filtro" id="f-concluido"    class="filtro__radio">
+
+        <!-- ===================== RESUMO / FILTROS ===================== -->
+        <div class="resumo">
+            <label for="f-aberto" class="resumo__item resumo__item--aberto">
+                <span class="resumo__numero">{% for g in grupos %}{% if g.grouper == 'Aberto' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="resumo__rotulo">Abertos</span>
+            </label>
+            <label for="f-em-andamento" class="resumo__item resumo__item--em-andamento">
+                <span class="resumo__numero">{% for g in grupos %}{% if g.grouper == 'Em andamento' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="resumo__rotulo">Em andamento</span>
+            </label>
+            <label for="f-concluido" class="resumo__item resumo__item--concluido">
+                <span class="resumo__numero">{% for g in grupos %}{% if g.grouper == 'Concluído' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="resumo__rotulo">Concluídos</span>
+            </label>
+        </div>
+
+        <!-- ===================== LISTA DE CHAMADOS ===================== -->
+        <div class="chamados">
+            {% for chamado in chamados %}
+                {% with ultima=chamado.administracao.first %}
+                <article class="chamado chamado--{{ chamado.status|slugify }}">
+
+                    {% if chamado.foto %}
+                        <a href="{{ chamado.foto.url }}" target="_blank" class="chamado__foto">
+                            <img src="{{ chamado.foto.url }}" alt="Foto do chamado: {{ chamado.titulo }}" loading="lazy">
+                        </a>
+                    {% else %}
+                        <div class="chamado__foto chamado__foto--vazia" aria-hidden="true">📍</div>
+                    {% endif %}
+
+                    <div class="chamado__corpo">
+                        <header class="chamado__topo">
+                            <span class="chamado__protocolo">#{{ chamado.pk|stringformat:"05d" }}</span>
+                            <span class="badge badge--{{ chamado.status|slugify }}">{{ chamado.get_status_display }}</span>
+                            <span class="badge badge--{{ chamado.prioridade|slugify }}">Prioridade {{ chamado.get_prioridade_display|lower }}</span>
+                        </header>
+
+                        <h2 class="chamado__titulo">{{ chamado.titulo }}</h2>
+                        <p class="chamado__descricao">{{ chamado.descricao|truncatechars:180 }}</p>
+
+                        <ul class="chamado__info">
+                            <li>
+                                <span class="chamado__info-icone" aria-hidden="true">🏷️</span>
+                                {{ chamado.categoria.nome }}
+                                {% if chamado.categoria.orgao %}
+                                    <span class="chamado__orgao">{{ chamado.categoria.orgao.sigla }}</span>
+                                {% endif %}
+                            </li>
+                            <li>
+                                <span class="chamado__info-icone" aria-hidden="true">📍</span>
+                                {{ chamado.endereco }}
+                            </li>
+                            <li>
+                                <span class="chamado__info-icone" aria-hidden="true">📅</span>
+                                Aberto em {{ chamado.data_criacao|date:"d/m/Y \à\s H:i" }}
+                            </li>
+                        </ul>
+
+                        <!-- Linha do tempo do status -->
+                        <ol class="progresso" aria-label="Andamento do chamado">
+                            <li class="progresso__etapa is-feito">Aberto</li>
+                            <li class="progresso__etapa {% if chamado.status == 'Em andamento' or chamado.status == 'Concluído' %}is-feito{% endif %}">Em andamento</li>
+                            <li class="progresso__etapa {% if chamado.status == 'Concluído' %}is-feito{% endif %}">Concluído</li>
+                        </ol>
+
+                        {% if ultima %}
+                            <p class="chamado__atualizacao">
+                                Última atualização em {{ ultima.data_atualizacao|date:"d/m/Y \à\s H:i" }}
+                                {% if chamado.categoria.orgao %} pelo órgão <strong>{{ chamado.categoria.orgao.nome }}</strong>{% endif %}.
+                            </p>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endwith %}
+            {% endfor %}
+        </div>
+
+        <!-- Aparece (via CSS) quando o filtro escolhido não tem nenhum chamado -->
+        <div class="empty chamados__vazio-filtro">
+            <p>Nenhum chamado com esse status.</p>
+        </div>
+    </div>
+
+{% else %}
+
+    <!-- ===================== ESTADO VAZIO ===================== -->
+    <div class="card chamados__vazio">
+        <span class="chamados__vazio-icone" aria-hidden="true">📋</span>
+        <h2>Você ainda não abriu nenhum chamado</h2>
+        <p>
+            Viu um buraco na rua, um poste apagado ou lixo acumulado?
+            Registre o problema e acompanhe por aqui até ele ser resolvido.
+        </p>
+        <a href="{% url 'novo_chamado' %}" class="btn btn--primary">Abrir meu primeiro chamado</a>
+    </div>
+
+{% endif %}
+
+{% endblock %}

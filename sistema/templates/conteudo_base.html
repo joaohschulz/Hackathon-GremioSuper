@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
-
 {% block title %}Início{% endblock %}
-
 {% block content %}
-
 {% url 'cidadao_dashboard' as cidadao_url %}
 
 <section class="hero">
@@ -20,7 +17,7 @@
 
     <div class="hero__actions">
         {% if user.is_authenticated %}
-            <a href="{{ cidadao_url|default:'#' }}" class="btn btn--primary btn--lg">Ver meus chamados</a>
+            <a href="{% url 'chamados' %}" class="btn btn--primary btn--lg">Ver meus chamados</a>
         {% else %}
             <a href="{% url 'register' %}" class="btn btn--primary btn--lg">Criar conta e abrir chamado</a>
             <a href="{% url 'login' %}" class="btn btn--ghost btn--lg">Já tenho conta</a>

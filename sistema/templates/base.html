@@ -31,7 +31,7 @@
                     {% if user.perfil.tipo_usuario == 'Administrador' %}
                         <a href="{{ adm_url|default:'#' }}" class="nav__link">Painel do órgão</a>
                     {% else %}
-                        <a href="{{ cidadao_url|default:'#' }}" class="nav__link">Meus chamados</a>
+                        <a href="{% url 'chamados' %}" class="nav__link">Meus chamados</a>
                     {% endif %}
 
                     <span class="nav__user">
