@@ -1,0 +1,422 @@
+/* ==========================================================================
+   Resolve Nova Esperança — ver_chamado.css
+   Visualização completa de um chamado pelo administrador (ver_chamado.html)
+   Usa as variáveis e classes globais definidas em base.css
+   ========================================================================== */
+
+.voltar {
+    display: inline-block;
+    font-size: .92rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--cor-texto-suave);
+}
+
+.voltar:hover {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+/* ---------- Cabeçalho ---------- */
+.ver-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 24px 28px;
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-left: 6px solid var(--cor-aberto);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+}
+
+.ver-topo--em-andamento { border-left-color: var(--cor-andamento); }
+.ver-topo--concluido    { border-left-color: var(--cor-concluido); }
+
+.ver-topo__info {
+    min-width: 0;
+    flex: 1;
+}
+
+.ver-topo__protocolo {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .85rem;
+    color: var(--cor-texto-suave);
+}
+
+.ver-topo h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 4px 0 12px;
+    word-break: break-word;
+}
+
+.ver-topo__badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ver-topo__badges .badge {
+    font-size: .85rem;
+    padding: 4px 12px;
+}
+
+.ver-topo__data {
+    font-size: .88rem;
+    color: var(--cor-texto-suave);
+    margin-left: 4px;
+}
+
+.ver-topo__acoes {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ---------- Linha do tempo grande ---------- */
+.progresso-grande {
+    list-style: none;
+    padding: 20px 28px;
+    margin: 0 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+}
+
+.progresso-grande__etapa {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+}
+
+.progresso-grande__bola {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--cor-superficie);
+    border: 3px solid var(--cor-borda);
+    font-weight: 700;
+}
+
+/* linha entre as etapas */
+.progresso-grande__etapa + .progresso-grande__etapa::before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    right: 50%;
+    width: 100%;
+    height: 3px;
+    background: var(--cor-borda);
+}
+
+.progresso-grande__etapa.is-feito {
+    color: var(--cor-texto);
+}
+
+.progresso-grande__etapa.is-feito .progresso-grande__bola {
+    background: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: #fff;
+}
+
+.progresso-grande__etapa.is-feito + .progresso-grande__etapa.is-feito::before {
+    background: var(--cor-primaria);
+}
+
+/* ---------- Layout ---------- */
+.ver {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 24px;
+    align-items: start;
+}
+
+.ver__principal,
+.ver__lateral {
+    display: grid;
+    gap: 20px;
+}
+
+.ver-bloco {
+    padding: 22px 24px;
+}
+
+.ver-bloco__titulo {
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--cor-texto-suave);
+    margin-bottom: 14px;
+}
+
+/* ---------- Foto ---------- */
+.ver-foto {
+    position: relative;
+    display: block;
+    border-radius: var(--raio-sm);
+    overflow: hidden;
+    background: var(--cor-fundo);
+}
+
+.ver-foto img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.ver-foto__dica {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, .75);
+    color: #fff;
+    font-size: .78rem;
+    opacity: 0;
+    transition: opacity .15s;
+}
+
+.ver-foto:hover {
+    text-decoration: none;
+}
+
+.ver-foto:hover .ver-foto__dica,
+.ver-foto:focus-visible .ver-foto__dica {
+    opacity: 1;
+}
+
+.ver-foto--vazia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 48px 16px;
+    color: var(--cor-texto-suave);
+    font-size: .95rem;
+    border: 2px dashed var(--cor-borda);
+}
+
+.ver-foto--vazia span {
+    font-size: 2.4rem;
+    opacity: .6;
+}
+
+/* ---------- Descrição e endereço ---------- */
+.ver-descricao {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0;
+    word-break: break-word;
+}
+
+.ver-endereco {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ---------- Lista de dados (lateral) ---------- */
+.ver-dados {
+    margin: 0;
+    display: grid;
+    gap: 0;
+}
+
+.ver-dados > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.ver-dados > div:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.ver-dados > div:first-child {
+    padding-top: 0;
+}
+
+.ver-dados dt {
+    font-size: .88rem;
+    color: var(--cor-texto-suave);
+}
+
+.ver-dados dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+    font-size: .92rem;
+}
+
+.ver-sigla {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--cor-secundaria);
+    color: #fff;
+}
+
+/* ---------- Pessoa (cidadão / responsável) ---------- */
+.pessoa {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pessoa strong,
+.pessoa small {
+    display: block;
+    line-height: 1.35;
+}
+
+.pessoa small {
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+}
+
+.pessoa__avatar {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--cor-primaria-clara);
+    color: var(--cor-primaria);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.pessoa__avatar--adm {
+    background: var(--cor-secundaria);
+    color: #fff;
+}
+
+.pessoa__contato {
+    display: block;
+    margin-top: 12px;
+    font-size: .9rem;
+    word-break: break-all;
+}
+
+.ver-vazio {
+    margin: 0;
+    font-size: .9rem;
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Histórico ---------- */
+.historico {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+
+/* linha vertical */
+.historico::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--cor-borda);
+}
+
+.historico__item {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    padding: 0 0 16px 24px;
+    font-size: .88rem;
+}
+
+.historico__item:last-child {
+    padding-bottom: 0;
+}
+
+/* bolinha */
+.historico__item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cor-aberto);
+    border: 2px solid var(--cor-superficie);
+}
+
+.historico__item--em-andamento::before { background: var(--cor-andamento); }
+.historico__item--concluido::before    { background: var(--cor-concluido); }
+.historico__item--inicio::before       { background: var(--cor-texto-suave); }
+
+.historico__quem {
+    color: var(--cor-texto);
+}
+
+.historico__quando {
+    width: 100%;
+    font-size: .8rem;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 900px) {
+    .ver {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .ver-topo {
+        padding: 20px;
+    }
+
+    .ver-topo__acoes,
+    .ver-topo__acoes .btn {
+        width: 100%;
+    }
+
+    .progresso-grande {
+        padding: 16px 12px;
+        font-size: .8rem;
+    }
+
+    .ver-bloco {
+        padding: 18px;
+    }
+}

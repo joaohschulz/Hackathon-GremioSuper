@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Painel do órgão{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/adm_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% with orgao=user.perfil.orgao %}
+
+<!-- ===================== CABEÇALHO ===================== -->
+<div class="painel-topo">
+    <div>
+        <span class="painel-topo__eyebrow">Painel do órgão</span>
+        <h1>
+            {{ orgao.nome|default:"Órgão não definido" }}
+            {% if orgao.sigla %}<span class="painel-topo__sigla">{{ orgao.sigla }}</span>{% endif %}
+        </h1>
+        <p class="painel-topo__sub">
+            Chamados abertos pelos cidadãos de Nova Esperança nas categorias do seu órgão.
+        </p>
+    </div>
+    <div class="painel-topo__user">
+        <span class="painel-topo__avatar" aria-hidden="true">{{ user.username|first|upper }}</span>
+        <div>
+            <strong>{{ user.get_full_name|default:user.username }}</strong>
+            <small>Administrador</small>
+        </div>
+    </div>
+</div>
+
+{% if not orgao %}
+
+    <div class="alert alert--warning">
+        Seu perfil ainda não está ligado a nenhum órgão. Peça a um administrador do sistema
+        para definir o órgão no seu perfil para ver os chamados.
+    </div>
+
+{% elif adm_chamados %}
+
+    {# Contagens feitas no próprio template (sem JavaScript) #}
+    {% regroup adm_chamados|dictsort:"status" by status as por_status %}
+    {% regroup adm_chamados|dictsort:"prioridade" by prioridade as por_prioridade %}
+
+    {# Filtro feito só com CSS: cada rádio escondido controla quais linhas aparecem #}
+    <div class="filtro">
+        <input type="radio" name="filtro" id="f-todos"        class="filtro__radio" checked>
+        <input type="radio" name="filtro" id="f-aberto"       class="filtro__radio">
+        <input type="radio" name="filtro" id="f-em-andamento" class="filtro__radio">
+        <input type="radio" name="filtro" id="f-concluido"    class="filtro__radio">
+        <input type="radio" name="filtro" id="f-alta"         class="filtro__radio">
+
+        <!-- ===================== INDICADORES ===================== -->
+        <div class="indicadores">
+            <label for="f-todos" class="indicador">
+                <span class="indicador__rotulo">Total</span>
+                <span class="indicador__numero">{{ adm_chamados|length }}</span>
+                <span class="indicador__desc">chamados do órgão</span>
+            </label>
+            <label for="f-aberto" class="indicador indicador--aberto">
+                <span class="indicador__rotulo">Abertos</span>
+                <span class="indicador__numero">{% for g in por_status %}{% if g.grouper == 'Aberto' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="indicador__desc">aguardando análise</span>
+            </label>
+            <label for="f-em-andamento" class="indicador indicador--em-andamento">
+                <span class="indicador__rotulo">Em andamento</span>
+                <span class="indicador__numero">{% for g in por_status %}{% if g.grouper == 'Em andamento' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="indicador__desc">equipe trabalhando</span>
+            </label>
+            <label for="f-concluido" class="indicador indicador--concluido">
+                <span class="indicador__rotulo">Concluídos</span>
+                <span class="indicador__numero">{% for g in por_status %}{% if g.grouper == 'Concluído' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="indicador__desc">problemas resolvidos</span>
+            </label>
+            <label for="f-alta" class="indicador indicador--alta">
+                <span class="indicador__rotulo">Prioridade alta</span>
+                <span class="indicador__numero">{% for g in por_prioridade %}{% if g.grouper == 'Alta' %}{{ g.list|length }}{% endif %}{% endfor %}</span>
+                <span class="indicador__desc">precisam de atenção</span>
+            </label>
+        </div>
+
+        <!-- ===================== LISTA DE CHAMADOS ===================== -->
+        <div class="tabela-chamados lista-adm">
+            {% for chamado in adm_chamados %}
+                {% with ultima=chamado.administracao.first %}
+                <article class="linha linha--{{ chamado.status|slugify }} linha--prioridade-{{ chamado.prioridade|slugify }}">
+
+                    <!-- Foto -->
+                    {% if chamado.foto %}
+                        <a href="{{ chamado.foto.url }}" target="_blank" class="linha__foto">
+                            <img src="{{ chamado.foto.url }}" alt="Foto do chamado" loading="lazy">
+                        </a>
+                    {% else %}
+                        <span class="linha__foto linha__foto--vazia" aria-hidden="true">📍</span>
+                    {% endif %}
+
+                    <!-- Informações do chamado -->
+                    <div class="linha__info">
+                        <div class="linha__topo">
+                            <span class="linha__protocolo">#{{ chamado.pk|stringformat:"05d" }}</span>
+                            <span class="badge badge--{{ chamado.status|slugify }}">{{ chamado.get_status_display }}</span>
+                            <span class="badge badge--{{ chamado.prioridade|slugify }}">{{ chamado.get_prioridade_display }}</span>
+                        </div>
+                        <h3 class="linha__titulo">{{ chamado.titulo }}</h3>
+                        <p class="linha__desc">{{ chamado.descricao|truncatechars:110 }}</p>
+                        <ul class="linha__meta">
+                            <li>🏷️ {{ chamado.categoria.nome }}</li>
+                            <li>📍 {{ chamado.endereco|truncatechars:50 }}</li>
+                            <li>📅 {{ chamado.data_criacao|date:"d/m/Y H:i" }}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pessoas -->
+                    <dl class="linha__pessoas">
+                        <div>
+                            <dt>Cidadão</dt>
+                            <dd>
+                                <strong>{{ chamado.cidadao.get_full_name|default:chamado.cidadao.username }}</strong>
+                                {% if chamado.cidadao.email %}<small>{{ chamado.cidadao.email }}</small>{% endif %}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Responsável</dt>
+                            <dd>
+                                {% if ultima %}
+                                    <strong>{{ ultima.usuario.username }}</strong>
+                                    <small>desde {{ ultima.data_atualizacao|date:"d/m H:i" }}</small>
+                                {% else %}
+                                    <span class="sem-responsavel">Sem responsável</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+                    </dl>
+
+                    <!-- Ações: sempre visíveis, sem rolagem lateral -->
+                    <div class="linha__acoes">
+                        <a href="{% url 'ver_chamado' chamado.pk %}" class="btn btn--ghost btn--sm">Ver chamado</a>
+                        <a href="{% url 'gerenciar_chamado' chamado.pk %}" class="btn btn--sm">Gerenciar</a>
+                    </div>
+                </article>
+                {% endwith %}
+            {% endfor %}
+
+            <!-- Aparece (via CSS) quando o filtro escolhido não tem nenhum chamado -->
+            <div class="empty filtro__vazio">Nenhum chamado neste filtro.</div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div class="card painel-vazio">
+        <span class="painel-vazio__icone" aria-hidden="true">🎉</span>
+        <h2>Nenhum chamado por aqui</h2>
+        <p>Ainda não há chamados nas categorias de {{ orgao.nome }}. Quando um cidadão abrir um, ele aparece nesta lista.</p>
+    </div>
+
+{% endif %}
+
+{% endwith %}
+
+{% endblock %}

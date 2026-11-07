@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chamado #{{ chamado.pk|stringformat:"05d" }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/ver_chamado.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% with historico=chamado.administracao.all ultima=chamado.administracao.first %}
+{% url 'administrar_chamado' chamado.pk as gerenciar_url %}
+
+<a href="{% url 'adm_chamados' %}" class="voltar">← Voltar para o painel</a>
+
+<!-- ===================== CABEÇALHO ===================== -->
+<header class="ver-topo ver-topo--{{ chamado.status|slugify }}">
+    <div class="ver-topo__info">
+        <span class="ver-topo__protocolo">Chamado #{{ chamado.pk|stringformat:"05d" }}</span>
+        <h1>{{ chamado.titulo }}</h1>
+        <div class="ver-topo__badges">
+            <span class="badge badge--{{ chamado.status|slugify }}">{{ chamado.get_status_display }}</span>
+            <span class="badge badge--{{ chamado.prioridade|slugify }}">Prioridade {{ chamado.get_prioridade_display|lower }}</span>
+            <span class="ver-topo__data">Aberto em {{ chamado.data_criacao|date:"d/m/Y \à\s H:i" }}</span>
+        </div>
+    </div>
+
+    <div class="ver-topo__acoes">
+        {% if gerenciar_url %}
+            <a href="{{ gerenciar_url }}" class="btn btn--primary">Atualizar chamado</a>
+        {% else %}
+            <a href="{% url 'admin:sistema_administrarchamado_add' %}?chamado={{ chamado.pk }}&status={{ chamado.status|urlencode }}&usuario={{ user.pk }}"
+               class="btn btn--primary">Atualizar chamado</a>
+        {% endif %}
+    </div>
+</header>
+
+<!-- Linha do tempo do status -->
+<ol class="progresso-grande" aria-label="Andamento do chamado">
+    <li class="progresso-grande__etapa is-feito">
+        <span class="progresso-grande__bola">1</span>
+        <span>Aberto</span>
+    </li>
+    <li class="progresso-grande__etapa {% if chamado.status == 'Em andamento' or chamado.status == 'Concluído' %}is-feito{% endif %}">
+        <span class="progresso-grande__bola">2</span>
+        <span>Em andamento</span>
+    </li>
+    <li class="progresso-grande__etapa {% if chamado.status == 'Concluído' %}is-feito{% endif %}">
+        <span class="progresso-grande__bola">3</span>
+        <span>Concluído</span>
+    </li>
+</ol>
+
+<div class="ver">
+
+    <!-- ===================== COLUNA PRINCIPAL ===================== -->
+    <div class="ver__principal">
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">📷 Foto do local</h2>
+            {% if chamado.foto %}
+                <a href="{{ chamado.foto.url }}" target="_blank" class="ver-foto" title="Abrir foto em tamanho original">
+                    <img src="{{ chamado.foto.url }}" alt="Foto enviada pelo cidadão: {{ chamado.titulo }}">
+                    <span class="ver-foto__dica">Clique para abrir em tamanho original ↗</span>
+                </a>
+            {% else %}
+                <div class="ver-foto ver-foto--vazia">
+                    <span aria-hidden="true">🖼️</span>
+                    O cidadão não enviou foto neste chamado.
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">📝 Descrição do problema</h2>
+            <p class="ver-descricao">{{ chamado.descricao|linebreaksbr }}</p>
+        </section>
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">📍 Localização</h2>
+            <p class="ver-endereco">{{ chamado.endereco }}</p>
+            <a href="https://www.google.com/maps/search/?api=1&query={{ chamado.endereco|urlencode }}"
+               target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Abrir no mapa ↗</a>
+        </section>
+
+    </div>
+
+    <!-- ===================== LATERAL ===================== -->
+    <aside class="ver__lateral">
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">Detalhes</h2>
+            <dl class="ver-dados">
+                <div>
+                    <dt>Protocolo</dt>
+                    <dd>#{{ chamado.pk|stringformat:"05d" }}</dd>
+                </div>
+                <div>
+                    <dt>Categoria</dt>
+                    <dd>{{ chamado.categoria.nome }}</dd>
+                </div>
+                <div>
+                    <dt>Órgão responsável</dt>
+                    <dd>
+                        {{ chamado.categoria.orgao.nome }}
+                        {% if chamado.categoria.orgao.sigla %}<span class="ver-sigla">{{ chamado.categoria.orgao.sigla }}</span>{% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt>Prioridade</dt>
+                    <dd><span class="badge badge--{{ chamado.prioridade|slugify }}">{{ chamado.get_prioridade_display }}</span></dd>
+                </div>
+                <div>
+                    <dt>Status</dt>
+                    <dd><span class="badge badge--{{ chamado.status|slugify }}">{{ chamado.get_status_display }}</span></dd>
+                </div>
+                <div>
+                    <dt>Aberto em</dt>
+                    <dd>{{ chamado.data_criacao|date:"d/m/Y \à\s H:i" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">Cidadão</h2>
+            <div class="pessoa">
+                <span class="pessoa__avatar" aria-hidden="true">{{ chamado.cidadao.username|first|upper }}</span>
+                <div>
+                    <strong>{{ chamado.cidadao.get_full_name|default:chamado.cidadao.username }}</strong>
+                    <small>@{{ chamado.cidadao.username }}</small>
+                </div>
+            </div>
+            {% if chamado.cidadao.email %}
+                <a href="mailto:{{ chamado.cidadao.email }}" class="pessoa__contato">✉️ {{ chamado.cidadao.email }}</a>
+            {% endif %}
+        </section>
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">Responsável</h2>
+            {% if ultima %}
+                <div class="pessoa">
+                    <span class="pessoa__avatar pessoa__avatar--adm" aria-hidden="true">{{ ultima.usuario.username|first|upper }}</span>
+                    <div>
+                        <strong>{{ ultima.usuario.get_full_name|default:ultima.usuario.username }}</strong>
+                        <small>desde {{ ultima.data_atualizacao|date:"d/m/Y \à\s H:i" }}</small>
+                    </div>
+                </div>
+            {% else %}
+                <p class="ver-vazio">Ninguém assumiu este chamado ainda.</p>
+            {% endif %}
+        </section>
+
+        <section class="card ver-bloco">
+            <h2 class="ver-bloco__titulo">Histórico</h2>
+            {% if historico %}
+                <ol class="historico">
+                    {% for item in historico %}
+                        <li class="historico__item historico__item--{{ item.status|slugify }}">
+                            <span class="badge badge--{{ item.status|slugify }}">{{ item.get_status_display }}</span>
+                            <span class="historico__quem">por <strong>{{ item.usuario.username }}</strong></span>
+                            <time class="historico__quando">{{ item.data_atualizacao|date:"d/m/Y \à\s H:i" }}</time>
+                        </li>
+                    {% endfor %}
+                    <li class="historico__item historico__item--inicio">
+                        <span class="badge badge--aberto">Aberto</span>
+                        <span class="historico__quem">pelo cidadão</span>
+                        <time class="historico__quando">{{ chamado.data_criacao|date:"d/m/Y \à\s H:i" }}</time>
+                    </li>
+                </ol>
+            {% else %}
+                <p class="ver-vazio">Nenhuma atualização ainda. O chamado foi aberto em {{ chamado.data_criacao|date:"d/m/Y" }}.</p>
+            {% endif %}
+        </section>
+
+    </aside>
+</div>
+
+{% endwith %}
+
+{% endblock %}
