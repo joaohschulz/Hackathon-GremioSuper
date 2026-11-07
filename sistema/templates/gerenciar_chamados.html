@@ -27,8 +27,6 @@
 </div>
 
 <div class="gerenciar">
-
-    <!-- ===================== FORMULÁRIO ===================== -->
     <form method="post" class="card gerenciar__form" novalidate>
         {% csrf_token %}
 
@@ -41,8 +39,6 @@
                 {{ form.chamado.errors }}
             </div>
         {% endif %}
-
-        <!-- Status -->
         <fieldset class="bloco">
             <legend class="bloco__titulo"><span>1</span> Novo status</legend>
             <p class="bloco__ajuda">
@@ -71,8 +67,6 @@
             </div>
             {{ form.status.errors }}
         </fieldset>
-
-        <!-- Responsável -->
         <fieldset class="bloco">
             <legend class="bloco__titulo"><span>2</span> Responsável</legend>
 
@@ -96,8 +90,6 @@
             <button type="submit" class="btn btn--primary btn--lg">Salvar alterações</button>
         </div>
     </form>
-
-    <!-- ===================== LATERAL: RESUMO + HISTÓRICO ===================== -->
     <aside class="gerenciar__lateral">
 
         <section class="card resumo-chamado resumo-chamado--{{ chamado.status|slugify }}">
@@ -106,7 +98,6 @@
                     <img src="{{ chamado.foto.url }}" alt="Foto do chamado">
                 </a>
             {% endif %}
-
             <div class="resumo-chamado__corpo">
                 <span class="resumo-chamado__protocolo">#{{ chamado.pk|stringformat:"05d" }}</span>
                 <h2>{{ chamado.titulo }}</h2>
@@ -123,7 +114,6 @@
                 <a href="{% url 'ver_chamado' chamado.pk %}" class="btn btn--ghost btn--sm btn--block">Ver chamado completo</a>
             </div>
         </section>
-
         <section class="card historico-box">
             <h3>Histórico</h3>
             {% if historico %}
@@ -140,7 +130,6 @@
                 <p class="historico-box__vazio">Nenhuma atualização ainda. Esta será a primeira.</p>
             {% endif %}
         </section>
-
     </aside>
 </div>
 
