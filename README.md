@@ -180,6 +180,13 @@ Depois, acesse:
 
 No painel administrativo, cadastre ao menos um **órgão** e uma **categoria** associada a ele para que as opções estejam disponíveis ao abrir chamados. Use uma conta administrativa para cadastrar e atualizar registros de atendimento.
 
-## Escopo do MVP
+## Integrantes
 
-Este projeto é uma demonstração local.
+NOME: Joao Schulz
+RGM: 114.044
+
+NOME: Alex Vinícius
+RGM: 114.056
+
+NOME: Ellian Calebe
+RGM: 114.023
