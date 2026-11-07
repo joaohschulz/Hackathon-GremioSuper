@@ -1,0 +1,207 @@
+:root {
+    --cor-primaria: #0f766e;
+    --cor-primaria-escura: #0b5d57;
+    --cor-primaria-clara: #e0f2f1;
+    --cor-secundaria: #1e40af;
+
+    --cor-texto: #1f2937;
+    --cor-texto-suave: #6b7280;
+    --cor-fundo: #f4f7f6;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e2e8e6;
+
+    /* Prioridade */
+
+    --raio-sm: 6px;
+    --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --largura-max: 1120px;
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--fonte);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--cor-texto);
+    background: var(--cor-fundo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+    margin: 0 0 .5em;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+.login-container {
+  display: grid;
+  place-items: center; 
+  height: 100vh;
+  border: 2px solid black;
+  width: 100%;
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.login-container button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1px;
+    font: inherit;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: var(--raio-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    text-decoration: none;
+    background: var(--cor-primaria);
+    color: #fff;
+}
+
+.login-container button:hover {
+        text-decoration: none;
+    background: var(--cor-primaria-escura);
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 1px;           
+    font-size: .82rem;
+    color: var(--cor-texto-suave);
+    margin-top: 1px;
+}
+
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav__link {
+    color: var(--cor-texto-suave);
+    font-weight: 500;
+}
+
+.nav__link:hover {
+    color: var(--cor-primaria);
+    text-decoration: none;
+}
+
+.nav__user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .95rem;
+    padding-left: 20px;
+    border-left: 1px solid var(--cor-borda);
+}
+
+.nav__logout {
+    margin: 0;
+}
+
+/* Menu hambúrguer (só aparece no celular) */
+.menu-toggle {
+    display: none;
+}
+
+.menu-button {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-button span {
+    width: 22px;
+    height: 2px;
+    background: var(--cor-texto);
+    border-radius: 2px;
+}
+
+/* ---------- Rodapé ---------- */
+.footer {
+    background: var(--cor-superficie);
+    border-top: 1px solid var(--cor-borda);
+    font-size: .9rem;
+}
+
+.footer__inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.footer__muted {
+    color: var(--cor-texto-suave);
+}
+
+
+@media (max-width: 720px) {
+    .menu-button {
+        display: flex;
+    }
+
+    .nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 8px 0 16px;
+    }
+
+    .menu-toggle:checked ~ .nav {
+        display: flex;
+    }
+
+    .nav__link {
+        padding: 8px 0;
+    }
+
+    .nav__user {
+        border-left: none;
+        padding: 8px 0;
+        border-top: 1px solid var(--cor-borda);
+    }
+
+    .nav .btn,
+    .nav__logout .btn {
+        width: 100%;
+    }
+}
