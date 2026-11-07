@@ -1,59 +1,100 @@
-/* Reset básico para limpar as margens do navegador */
+/* ==========================================
+   1. VARIÁVEIS DE DESIGN (Herdadas do Login)
+   ========================================== */
+:root {
+    --cor-primaria: #0f766e;
+    --cor-primaria-escura: #0b5d57;
+    --cor-primaria-clara: #e0f2f1;
+    --cor-secundaria: #1e40af;
+
+    --cor-texto: #1f2937;
+    --cor-texto-suave: #6b7280;
+    --cor-fundo: #f4f7f6;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e2e8e6;
+
+    --raio-sm: 6px;
+    --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --largura-max: 1120px;
+}
+
+/* ==========================================
+   2. RESET GLOBAL & BASES
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--fonte);
 }
 
-/* Fundo da tela inteira (Centraliza o card vertical e horizontalmente) */
 body {
-    background-color: #f0f2f5;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
-/* Estilização do Card de Logout */
+/* ==========================================
+   3. ESTRUTURA DO CARD DE LOGOUT
+   ========================================== */
 .logout-card {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
+    background-color: var(--cor-superficie);
     width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: var(--raio-sm);
+    border: 1px solid var(--cor-borda);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    text-align: center;
 }
 
 /* Título */
 .logout-card h2 {
-    color: #333333;
-    margin-bottom: 15px;
     font-size: 24px;
+    color: var(--cor-texto);
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.25;
 }
 
 /* Texto descritivo */
 .logout-card p {
-    color: #666666;
-    margin-bottom: 25px;
     font-size: 16px;
+    color: var(--cor-texto-suave);
+    margin-bottom: 25px;
 }
 
-/* Botão para voltar ao login */
+/* ==========================================
+   4. BOTÃO (Estilo Idêntico ao Login/Cadastro)
+   ========================================== */
 .btn-login {
-    display: inline-block;
-    background-color: #007bff;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    font: inherit;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: var(--raio-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .15s, border-color .15s, color .15s;
+    background: var(--cor-primaria);
+    color: #fff;
 }
 
-/* Efeito ao passar o mouse no botão */
+/* Efeito ao passar o mouse */
 .btn-login:hover {
-    background-color: #0056b3;
+    text-decoration: none;
+    background: var(--cor-primaria-escura);
+}
+
+/* Efeito de clique */
+.btn-login:active {
+    transform: scale(0.99);
 }
