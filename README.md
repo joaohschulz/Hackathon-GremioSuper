@@ -40,6 +40,20 @@ Um canal centralizado pode facilitar a comunicação entre cidadãos e administr
 - SQLite
 - HTML e CSS
 
+## Uso de Inteligência Artificial
+
+Durante o desenvolvimento do **Resolve Nova Esperança**, utilizamos a Inteligência Artificial como apoio ao processo de desenvolvimento.
+
+A IA foi utilizada principalmente para:
+
+- **Desenvolvimento dos templates:** auxílio na criação e estruturação das páginas HTML da aplicação.
+- **Estilização das páginas:** sugestões de organização visual e melhorias nos arquivos CSS.
+- **Apoio ao código:** sugestões de melhorias e esclarecimento de dúvidas relacionadas ao Python e Django.
+
+As sugestões fornecidas pela IA foram analisadas, adaptadas e implementadas pela equipe, que também ficou responsável pelos testes e validação das funcionalidades.
+
+A Inteligência Artificial foi utilizada como ferramenta de apoio, contribuindo para agilizar o desenvolvimento, sem substituir o aprendizado e a participação dos integrantes no projeto.
+
 ## Estrutura de pastas
 
 ```text
